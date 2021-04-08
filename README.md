@@ -1,2 +1,3 @@
 # Blog-Website
-Parthiv
+Parthiv Shah
+Jainam Shah
