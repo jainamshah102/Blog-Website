@@ -4,8 +4,8 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
-
+from .validation import validate
+from .forms import UserForm
 
 def index(request):
 
@@ -17,9 +17,11 @@ def index(request):
 def register(request):
 
     if request.method == "POST":
+        user = UserForm(data = request.POST)
 
-        print(request.FILES.get('profile_photo'))
-        print(request.POST)
+        if user.is_valid():
+            print(user)
+
         return render(request, 'registration.html')
 
     return render(request, 'registration.html')
