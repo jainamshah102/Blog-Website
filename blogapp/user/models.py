@@ -26,6 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     about = models.CharField(max_length=1000, blank=True, default="")
+    name = models.CharField(max_length=100, blank=True, default="")
     gender = models.CharField('gender', max_length=1, choices=GENDER_CHOICES)
     avatar = models.ImageField(upload_to=rename_file_upload, null=True, blank=True)
 
@@ -38,8 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         if not self.avatar:
             self.avatar = 'male.jpg' if self.gender == "M" else 'female.jpg'
-
+        
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.email

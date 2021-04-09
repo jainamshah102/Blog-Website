@@ -25,10 +25,12 @@ class UserForm(forms.ModelForm):
         clean_data = super().clean()
         p = clean_data["password"]
         cp = clean_data["confirm_password"]
-        
-        print(p, cp)
+
+        if p != cp:
+            raise forms.ValidationError("Password entered are not same!!")
+
 
     class Meta:
         model = User
-        fields = ('email', 'about', 'gender', 'avatar')
+        fields = ('email', 'about', 'gender', 'avatar', 'password', 'name')
 
