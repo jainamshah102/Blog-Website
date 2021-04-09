@@ -1,7 +1,7 @@
 from django.db import models
 from user.models import User
 from django.utils.text import slugify
-
+from django.utils import timezone
 
 STATUS = (
     (0, 'Draft'),
@@ -17,6 +17,7 @@ class Blog(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now= True)
+    published_on  = models.DateTimeField(blank=True, null=True)
 
 
     def __str__(self):
@@ -27,6 +28,11 @@ class Blog(models.Model):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.status = 1
+        self.save()
 
 
 class Like(models.Model):
