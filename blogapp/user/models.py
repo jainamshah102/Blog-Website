@@ -7,6 +7,7 @@ from .managers import CustomUserManager
 import uuid
 import os
 
+
 GENDER_CHOICES = (
     ('M', 'Male'),
     ('F', 'Female'),
@@ -37,9 +38,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
     def save(self, *args, **kwargs):
-        if not self.avatar:
-            self.avatar = 'male.jpg' if self.gender == "M" else 'female.jpg'
         
+        if self.gender and (self.avatar in ("male.jpg", "female.jpg") or not self.avatar):
+            self.avatar = 'male.jpg' if self.gender == "M" else 'female.jpg'
+
         super().save(*args, **kwargs)
 
 

@@ -3,6 +3,14 @@ from user.models import User
 from django.utils.text import slugify
 from django.utils import timezone
 
+
+
+def rename_file_upload(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('blog/', filename)
+
+
 STATUS = (
     (0, 'Draft'),
     (1, 'Publish'),
@@ -18,6 +26,7 @@ class Blog(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now= True)
     published_on  = models.DateTimeField(blank=True, null=True)
+    image = models.ImageField(upload_to=rename_file_upload, null=True, blank=True)
 
 
     def __str__(self):
