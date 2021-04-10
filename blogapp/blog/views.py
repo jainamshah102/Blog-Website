@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from .forms import BlogForm
 
 @login_required
@@ -13,6 +15,6 @@ def new_blog(request):
             new_blog = blog.save(commit=False)
             new_blog.author = request.user
             new_blog.save()
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'blog.html')

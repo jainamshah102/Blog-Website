@@ -103,6 +103,9 @@
 <script>
   tinyMCE.init({
     selector: "textarea",
+    skin: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "oxide-dark" : ""),
+    content_css: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""),
+
     content_style:
       "body { background: black; color: rgb(129, 212, 250); font-size: 14pt; font-family: Arial; }",
     setup: function (editor) {
