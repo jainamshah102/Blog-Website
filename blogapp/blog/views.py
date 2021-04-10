@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import BlogForm
 
+
+
 @login_required
 def new_blog(request):
 

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,18 +22,25 @@
       }
 
       nav {
-        background: rgb(34,47,62);
+        background: rgb(34, 47, 62);
         height: 80px;
         width: 100%;
         position: relative;
       }
 
-      label.logo {
+      #logo {
         color: white;
         font-size: 35px;
         line-height: 80px;
-        padding: 0 100px;
+        padding: 2px;
+        margin-left: 10px;
         font-weight: bold;
+      }
+
+      #logo:hover {
+        background: black;
+        color: rgb(129, 212, 250);
+        transition: 0.5s;
       }
 
       nav ul {
@@ -118,6 +126,12 @@
         background-size: cover;
         height: calc(100vh - 80px);
       }
+
+      #logoImage {
+        margin-left: 40px;
+        width: 40px;
+        height: 40px;
+      }
     </style>
 
     <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
@@ -132,9 +146,11 @@
 
   <body>
     <nav>
+      <img src="{% static "logo.png" %}" id="logoImage"/>
       <label class="logo"
         ><a id="logo" href="{% url 'index' %}">White Ink</a></label
       >
+
       <ul>
         <li><a href="#">About</a></li>
 
