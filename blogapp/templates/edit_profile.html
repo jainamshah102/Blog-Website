@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %} {% load static %}
 
 <style>
   * {
@@ -46,7 +46,6 @@
     justify-content: center;
     align-items: center;
     width: 500px;
-    height: 700px;
     margin-top: 5px;
     padding-top: 20px;
     border-radius: 12px;
@@ -117,40 +116,26 @@
   }
 </style>
 
-<head>
-  <script>
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                alert('{{error}}')
-            {% endfor %}
-        {% endfor %}
-
-        {% for error in form.non_field_errors %}
-            alert('{{error}}')
-        {% endfor %}
-
-    {% endif %}
-  </script>
-</head>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 
 <div class="flex-container">
   <div class="content-container">
     <div class="form-container">
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <h1>Register</h1>
 
         <br />
 
         <div id="profile-container">
           <image
             id="profileImage"
-            src="http://127.0.0.1:8000/media/default.jpg"
+            src="{{user.avatar.url}}"
           />
         </div>
+
+
         <input
           id="imageUpload"
           type="file"
@@ -164,7 +149,17 @@
           class="input"
           type="text"
           name="name"
-          value=""
+          value={{user.email}}
+          readonly
+          placeholder="Name"
+        />
+
+        <br />
+        <input
+          class="input"
+          type="text"
+          name="name"
+          value="{{user.name}}"
           required
           placeholder="Name"
         />
@@ -174,43 +169,14 @@
           class="input"
           type="text"
           name="about"
-          value=""
+          value="{{user.about}}"
           required
           placeholder="About"
         />
 
-        <br />
-        <input
-          class="input"
-          type="email"
-          name="email"
-          value=""
-          required
-          placeholder="Email"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="password"
-          name="password"
-          value=""
-          required
-          placeholder="Password"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="password"
-          name="confirm_password"
-          value=""
-          required
-          placeholder="Confirm Password"
-        />
 
         <div class="custom-select" style="width: 200px">
-          <select name="gender">
+          <select name="gender" value = {{user.gender}}>
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="O">Other</option>
@@ -218,7 +184,7 @@
         </div>
 
         <br />
-        <input type="submit" value="Submit" class="submit-btn" />
+        <input type="submit" value="Save" class="submit-btn" />
       </form>
     </div>
   </div>

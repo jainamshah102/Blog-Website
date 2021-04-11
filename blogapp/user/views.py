@@ -5,11 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
-from .forms import UserForm
+from .forms import UserForm, UpdateForm
 from blog.models import Blog, Like, Comment
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
-
+from .models import User
 
 def index(request):
 
@@ -71,3 +71,17 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+@login_required
+def profile(request):
+
+    if request.method == "POST":
+        user = UpdateForm(request.POST, request.FILES, instance=request.user)
+
+        if user.is_valid():
+            user.save()
+
+        return render(request, 'edit_profile.html', {'user': request.user})
+
+    return render(request, 'edit_profile.html')

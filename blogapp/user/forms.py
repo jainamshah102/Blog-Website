@@ -56,3 +56,11 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'about', 'gender', 'avatar', 'password', 'name')
+
+
+
+class UpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('name', 'about', 'avatar')
