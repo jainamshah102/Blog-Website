@@ -52,7 +52,6 @@ class Like(models.Model):
         return f"{self.user.email} - {self.blog.title}"
 
 
-
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete = models.CASCADE)

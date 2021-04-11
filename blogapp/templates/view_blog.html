@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+</head>
+<style>
+    body{
+        background-color: rgb(34, 47, 62);
+    }
+  .wrap {
+    width: 100%;
+  }
+
+  .floatleft {
+    float: left;
+    width: 20%;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    height: 100%;
+  }
+
+  .floatright {
+    padding: 2%;
+    float: right;
+    background-color: white;
+    width: 80%;
+    color: rgb(34, 47, 62);
+  }
+
+  #title {
+    font-size: 3vw;
+    font-family: "Times New Roman", Times, serif;
+    margin-left: 50px;
+    align-self: center;
+  }
+
+  #profile-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    align-content: center;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .author {
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+  }
+  
+  #co {
+      margin-left: 40px;
+  }
+</style>
+
+<div class="wrap">
+  <div class="floatleft">
+    <br />
+    <div id="profile-container">
+      <image id="profileImage" src="{{author.avatar.url}}" />
+    </div>
+    <br />
+    <br />
+    <p class="author">{{author.name}}</p>
+    <br /><br />
+    <p class="author">{{author.about}}</p>
+    <br /><br /><br />
+  </div>
+
+  <div class="floatright">
+    <h1 id="title">{{ blog.title }}</h1>
+    <p>{{ blog.content | safe}}</p>
+    <br />
+    <br />
+
+    {% if liked %}
+    <a
+      name="like"
+      style="font-size: 48px; color: green"
+      class="likin"
+      id="co"
+      ><i class="fa fa-thumbs-up" aria-hidden="true"></i
+    ></a>
+    {% else %}
+    <a
+      name="like"
+      style="font-size: 48px; color: red"
+      class="likin"
+      id="co"
+      ><i class="fa fa-thumbs-up" aria-hidden="true"></i
+    ></a>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  // AJAX CALL
+  $(".likin").click(function () {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'like' %}",
+      data: {
+        blog: "{{ blog.id }}",
+        operation: "like_submit",
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.liked == true) {
+          $(".likin").css("color", "green");
+        } else if (response.liked == false) {
+          $(".likin").css("color", "red");
+        }
+      },
+    });
+  });
+</script>
+
+{% endblock content %}
