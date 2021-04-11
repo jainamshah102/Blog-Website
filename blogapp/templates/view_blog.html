@@ -6,9 +6,9 @@
   />
 </head>
 <style>
-    body{
-        background-color: rgb(34, 47, 62);
-    }
+  body {
+    background-color: rgb(34, 47, 62);
+  }
   .wrap {
     width: 100%;
   }
@@ -19,6 +19,8 @@
     background-color: rgb(34, 47, 62);
     color: white;
     height: 100%;
+    display: table-cell;
+    vertical-align: middle;
   }
 
   .floatright {
@@ -37,6 +39,7 @@
   }
 
   #profile-container {
+    margin-left:30%;
     width: 100px;
     height: 100px;
     overflow: hidden;
@@ -56,23 +59,44 @@
     text-align: center;
     font-size: 30px;
   }
-  
+
   #co {
-      margin-left: 40px;
+    margin-left: 40px;
   }
+
+  #profile-container img {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  hr {
+    border: none;
+    height: 1px;
+    color: white; 
+    background-color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 </style>
 
 <div class="wrap">
   <div class="floatleft">
     <br />
     <div id="profile-container">
-      <image id="profileImage" src="{{author.avatar.url}}" />
+      <img id="profileImage" src="{{author.avatar.url}}" />
     </div>
     <br />
+    <br>
+    <hr/>
     <br />
     <p class="author">{{author.name}}</p>
-    <br /><br />
-    <p class="author">{{author.about}}</p>
+    <br>
+    <hr/>
+    <br />
+    <br />
+    <p class="author" style="font-size: 20px;">{{author.about}}</p>
     <br /><br /><br />
   </div>
 
@@ -83,19 +107,11 @@
     <br />
 
     {% if liked %}
-    <a
-      name="like"
-      style="font-size: 48px; color: green"
-      class="likin"
-      id="co"
+    <a name="like" style="font-size: 48px; color: green" class="likin" id="co"
       ><i class="fa fa-thumbs-up" aria-hidden="true"></i
     ></a>
     {% else %}
-    <a
-      name="like"
-      style="font-size: 48px; color: red"
-      class="likin"
-      id="co"
+    <a name="like" style="font-size: 48px; color: red" class="likin" id="co"
       ><i class="fa fa-thumbs-up" aria-hidden="true"></i
     ></a>
     {% endif %}

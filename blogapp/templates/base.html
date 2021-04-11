@@ -156,8 +156,9 @@
 
         {% if user.is_authenticated %}
 
-        <li><a href="#">Drafts</a></li>
-        <li><a href="{% url 'new_blog' %}">New Blogs</a></li>
+        <li><a href="#">Draft</a></li>
+        <li><a href="{% url 'new_blog' %}">New Blog</a></li>
+        <li><a href="#">Profile</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
 
         {% else %}
