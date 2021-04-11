@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from .forms import UserForm
 from blog.models import Blog, Like, Comment
+from django.shortcuts import redirect
+from django.utils.http import is_safe_url
 
 
 def index(request):
@@ -18,7 +20,7 @@ def index(request):
             likes = Like.objects.filter(blog = blog).count()
             comments = Comment.objects.filter(blog = blog).count()
             likes_comments.append({"likes": likes, "comments": comments})
-        print(likes_comments)
+
         return render(request, 'index.html', {"blogs_data": zip(blogs, likes_comments)})
 
 def register(request):
@@ -49,8 +51,16 @@ def login_user(request):
 
         if user:
             login(request, user)
-            return HttpResponseRedirect(reverse('index'))
-        
+            nxt = request.GET.get("next", None)
+
+            if nxt is None:
+                return HttpResponseRedirect(reverse('index'))
+
+            elif not is_safe_url(url=nxt,allowed_hosts={request.get_host()},require_https=request.is_secure()):
+                return HttpResponseRedirect(reverse('index'))
+
+            return redirect(nxt)
+
         else:
             return render(request, 'login.html', {"error": "Invalid username or password!"})
     
@@ -61,6 +71,3 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
-
-
-
