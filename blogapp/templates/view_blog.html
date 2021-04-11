@@ -39,7 +39,7 @@
   }
 
   #profile-container {
-    margin-left:30%;
+    margin-left: 30%;
     width: 100px;
     height: 100px;
     overflow: hidden;
@@ -73,12 +73,11 @@
   hr {
     border: none;
     height: 1px;
-    color: white; 
+    color: white;
     background-color: white;
     margin-left: 20px;
     margin-right: 20px;
-}
-
+  }
 </style>
 
 <div class="wrap">
@@ -88,15 +87,15 @@
       <img id="profileImage" src="{{author.avatar.url}}" />
     </div>
     <br />
-    <br>
-    <hr/>
     <br />
-    <p class="author">{{author.name}}</p>
-    <br>
-    <hr/>
+    <hr />
+    <br />
+    <a style = "color: white;" href="{% url "view_profile" email=author.email %}"><p class="author">{{author.name}}</p></a>
+    <br />
+    <hr />
     <br />
     <br />
-    <p class="author" style="font-size: 20px;">{{author.about}}</p>
+    <p class="author" style="font-size: 20px">{{author.about}}</p>
     <br /><br /><br />
   </div>
 

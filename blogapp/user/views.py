@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 from .models import User
 
+
 def index(request):
 
     if request.method == "GET":
@@ -74,13 +75,29 @@ def logout_user(request):
 
 
 @login_required
-def profile(request):
+def view_profile(request, email = None):
+
+    if request.method == "GET":
+        if not email:
+            blogs = Blog.objects.filter(author = request.user, status=1)
+            return render(request, 'view_profile.html', {"user": request.user, 'blogs': blogs})
+        else:
+            user = User.objects.get(email = email)
+            blogs = Blog.objects.filter(author = user,  status=1)
+            return render(request, 'view_profile.html', {'user': user, 'blogs': blogs})
+
+    return render(request, 'view_profile.html')
+
+
+@login_required
+def edit_profile(request):
 
     if request.method == "POST":
         user = UpdateForm(request.POST, request.FILES, instance=request.user)
 
         if user.is_valid():
             user.save()
+            return HttpResponseRedirect(reverse('view_profile'))
 
         return render(request, 'edit_profile.html', {'user': request.user})
 
