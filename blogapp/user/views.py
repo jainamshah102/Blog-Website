@@ -6,15 +6,20 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from .forms import UserForm
-
+from blog.models import Blog, Like, Comment
 
 
 def index(request):
 
     if request.method == "GET":
-        return render(request, 'index.html', {})
-
-
+        blogs = Blog.objects.filter(status=1)
+        likes_comments = []
+        for blog in blogs:
+            likes = Like.objects.filter(blog = blog).count()
+            comments = Comment.objects.filter(blog = blog).count()
+            likes_comments.append({"likes": likes, "comments": comments})
+        print(likes_comments)
+        return render(request, 'index.html', {"blogs_data": zip(blogs, likes_comments)})
 
 def register(request):
 
