@@ -35,7 +35,7 @@ def register(request):
             user.save()
 
             return HttpResponseRedirect(reverse('login'))
-   
+
         return render(request, 'registration.html', {'form': user_form})
 
     return render(request, 'registration.html')

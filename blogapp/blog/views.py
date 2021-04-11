@@ -60,3 +60,13 @@ def new_blog(request):
 
     return render(request, 'blog.html')
 
+
+@login_required
+def view_drafts(request):
+
+    if request.method == "GET":
+        blogs = Blog.objects.filter(author = request.user, status=0)
+
+        return render(request, 'drafts.html', {'blogs': blogs})
+
+    return render(request, 'drafts.html')

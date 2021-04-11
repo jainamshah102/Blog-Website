@@ -1,6 +1,46 @@
 {% extends "base.html" %} {% block content %}
 
+<style>
+        #line {
+      border: 0;
+      clear:both;
+      display:block;
+      background-color:rgb(34, 47, 62);
+      height: 5px;
+    }
+    #link{
+      color: green;
+    }
 
+    #title {
+        font-size: 3vw;
+        font-family: "Times New Roman", Times, serif;
+        align-self: center;
+        color: rgb(34, 47, 62);
+    }
+
+    #drafts {
+        background-color: white;
+        padding: 20px
+    }
+</style>
+
+<div id="drafts">
+    {% for blog in blogs %}
+        <h1 id="title">{{ blog.title }}</h1>
+        <p>{{ blog.content | truncatewords_html:30 | safe}}</p>
+        <br>
+        <a id = "link" style="color: green;" href="{% url "view_blog" id=blog.id slug=blog.slug %}">Read More</a>
+        <br />
+        <br />
+        <br />
+        <hr id="line">
+
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+</div>
 
 
 {% endblock content %}

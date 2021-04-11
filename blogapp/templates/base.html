@@ -156,7 +156,7 @@
 
         {% if user.is_authenticated %}
 
-        <li><a href="#">Draft</a></li>
+        <li><a href="{% url 'view_drafts' %}">Draft</a></li>
         <li><a href="{% url 'new_blog' %}">New Blog</a></li>
         <li><a href="{% url 'view_profile' %}">Profile</a></li>
         <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
