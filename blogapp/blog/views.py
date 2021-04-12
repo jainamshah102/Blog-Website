@@ -4,11 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import BlogForm
-from .models import Blog, Like
+from .models import Blog, Like, Comment
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 import json
 
+
+
+def get_comments(blog):
+    comments = Comment.objects.filter(blog = blog)
+
+    response = []
+    for comment in comments:
+        response.append({
+            "comment": comment.comment,
+        })
+
+    return response
 
 
 @login_required
@@ -22,8 +34,8 @@ def view_blog(request, id, slug):
             liked=True
         except:
             pass
-
-        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked})
+        comments = Comment.objects.filter(blog=blog)
+        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "comments": comments})
 
 
 @login_required
@@ -42,8 +54,28 @@ def like(request):
                 like.save()
                 liked = True
 
-            ctx = {'liked': liked}
-            return HttpResponse(json.dumps(ctx))
+            content = {'liked': liked}
+            return HttpResponse(json.dumps(content))
+
+
+@login_required
+def comment(request):
+    if request.method == "POST" and request.is_ajax() and request.POST.get("operation") == "comment_submit":
+        comment = request.POST.get("comment", None)
+        blog = request.POST.get("blog", None)
+
+        print(comment, blog)
+
+        blog = Blog.objects.get(id=blog)
+
+        if blog and comment:
+            comment = Comment(user=request.user, blog=blog, comment = comment)
+            comment.save()
+
+        content = {"comments": get_comments(blog)}
+        print(content)
+        return HttpResponse(json.dumps(content))
+
 
 
 @login_required
@@ -149,3 +181,5 @@ def view_draft_blog(request, blog, slug):
 
     else:
         raise Http404
+
+

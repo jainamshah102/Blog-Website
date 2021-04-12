@@ -78,6 +78,36 @@
     margin-left: 20px;
     margin-right: 20px;
   }
+
+  #comment {
+    height: 100%;
+    width: 100%;
+    border: white;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+  }
+
+  .submit-btn {
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px #38d39f70;
+    background: white;
+    color: rgb(34, 47, 62);
+    width: 80px;
+    align-items: center;
+    transition: all 1s;
+    height: 60px;
+    width: 120pxpx;
+  }
+
+  .submit-btn:hover {
+    color: white;
+    background-color: rgb(34, 47, 62);
+    box-shadow: none;
+  }
   
 </style>
 
@@ -116,7 +146,25 @@
     ></a>
     {% endif %}
 
-    <p class="author">Responses</p>
+    <p class="author">Thoughts</p>
+
+      <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
+       <br />
+       <br />
+       <br />
+       <br />
+
+       <a id = "post-comment">Post</a>
+       
+      <br />
+
+
+      <br><br><br>
+      <div id="comments-list">
+        {% for comment in comments %}
+          <p>{{comment.comment}}</p>
+        {% endfor %}
+      </div>
 
   </div>
 </div>
@@ -144,6 +192,28 @@
       },
     });
   });
+
+  
+  $("#post-comment").click(function () {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'comment' %}",
+      data: {
+        operation: "comment_submit",
+        blog: "{{blog.id}}",
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        comment: $('#comment').val(),
+      },
+      dataType: "json",
+      success: function (response) {
+        $('#comments-list').empty();
+        response.comments.forEach(comment => {
+          $('#comments-list').append("<p>" + comment.comment + "</p>")
+        }); 
+      },
+    });
+  });
+
 </script>
 
 {% endblock content %}
