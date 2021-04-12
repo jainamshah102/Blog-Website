@@ -53,7 +53,7 @@
   <p>
     <a href="#">View</a>
     <a href="{% url "publish_blog" blog=blog.id %}">Publish</a>
-    <a href="#">Edit</a>
+    <a href="{% url 'edit_blog' blog=blog.id slug=blog.slug %}">Edit</a>
     <a href="{% url 'delete_blog' blog=blog.id published=0 %}">Delete</a>
   </p>
   <br />

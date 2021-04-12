@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import new_blog, view_blog, like, view_drafts, view_published, publish_blog, delete_blog
+from .views import new_blog, view_blog, like, view_drafts, view_published, publish_blog, delete_blog, edit_blog
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('published/', view_published, name='view_published'),
     path('publish_blog/<int:blog>', publish_blog, name='publish_blog'),
     path('delete_blog/<int:blog>/<int:published>', delete_blog, name='delete_blog'),
+    path('edit_blog/<int:blog>/<slug:slug>', edit_blog, name='edit_blog'),
 ]

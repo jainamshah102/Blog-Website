@@ -40,7 +40,7 @@
 
   p {
     display: block;
-    
+
     line-height: 30px;
   }
 </style>
@@ -52,7 +52,7 @@
   <br />
   <p>
     <a href="{% url 'view_blog'  id=blog.id slug=blog.slug %}">View</a>
-    <a href="#">Edit</a>
+    <a href="{% url 'edit_blog' blog=blog.id slug=blog.slug %}">Edit</a>
     <a href="{% url 'delete_blog' blog=blog.id published=1 %}">Delete</a>
   </p>
   <br />

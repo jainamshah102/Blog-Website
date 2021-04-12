@@ -6,6 +6,7 @@ from django.urls import reverse
 from .forms import BlogForm
 from .models import Blog, Like
 from django.views.decorators.csrf import csrf_exempt
+from django.http import Http404
 import json
 
 
@@ -76,7 +77,7 @@ def view_drafts(request):
 def view_published(request):
 
     if request.method == "GET":
-        blogs = Blog.objects.filter(author = request.user, status=1)
+        blogs = Blog.objects.filter(author = request.user, status = 1)
 
         return render(request, 'published.html', {'blogs': blogs})
 
@@ -85,22 +86,52 @@ def view_published(request):
 
 @login_required
 def publish_blog(request, blog):
+    blog = Blog.objects.get(id = blog)
 
-    if request.method == "GET":
-        blog = Blog.objects.get(id = blog)
-        blog.publish()
-        return redirect('view_blog', id=blog.id, slug=blog.slug)
+    if blog.author == request.user:
+        if request.method == "GET":
 
-    return render(request, 'drafts.html')
+            if blog.author == request.user:
+                blog.publish()
+                return redirect('view_blog', id=blog.id, slug=blog.slug)
+
+        return render(request, 'drafts.html')
+    
+    else:
+        raise Http404
+
 
 @login_required
 def delete_blog(request, blog, published=0):
+    blog = Blog.objects.get(id = blog)
 
-    if request.method == "GET":
-        blog = Blog.objects.get(id = blog)
-        blog.delete()
+    if blog.author == request.user:
 
-    if published:
-        return HttpResponseRedirect(reverse('view_published'))
+        if request.method == "GET":
+            blog.delete()
+
+        if published:
+            return HttpResponseRedirect(reverse('view_published'))
+        else:
+            return HttpResponseRedirect(reverse('view_drafts'))
     else:
-        return HttpResponseRedirect(reverse('view_drafts'))
+        raise Http404
+
+
+@login_required
+def edit_blog(request, blog, slug):
+    blog = Blog.objects.get(id = blog, slug = slug)
+
+    if blog.author == request.user:
+
+        if request.method == 'POST':
+            edited_blog = BlogForm(request.POST, instance=blog)
+
+            if edited_blog.is_valid():
+                edited_blog.save()
+                # To edited blog view
+
+        return render(request, 'edit_blog.html', {'blog': blog})
+    
+    else:
+        raise Http404
