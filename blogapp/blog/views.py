@@ -96,7 +96,7 @@ def publish_blog(request, blog):
                 return redirect('view_blog', id=blog.id, slug=blog.slug)
 
         return render(request, 'drafts.html')
-    
+
     else:
         raise Http404
 
