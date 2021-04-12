@@ -33,7 +33,7 @@ def like(request):
         if request.POST.get("operation") == "like_submit" and request.is_ajax():
             blog=request.POST.get("blog",None)
 
-            blog = Blog.objects.get(id=blog)
+            blog = Blog.objects.get(id = blog)
             try:
                 like = Like.objects.get(user=request.user, blog=blog)
                 like.delete()
@@ -129,9 +129,24 @@ def edit_blog(request, blog, slug):
 
             if edited_blog.is_valid():
                 edited_blog.save()
-                # To edited blog view
+
+                if blog.status == 0:
+                    return redirect('view_draft_blog', id=blog.id, slug=blog.slug)
+                else:
+                    return redirect('view_blog', id=blog.id, slug=blog.slug)
 
         return render(request, 'edit_blog.html', {'blog': blog})
-    
+
+    else:
+        raise Http404
+
+
+@login_required
+def view_draft_blog(request, blog, slug):
+    blog = Blog.objects.get(id = blog, slug = slug)
+
+    if blog.author == request.user:
+        return render(request, 'view_draft_blog.html', {'blog': blog})
+
     else:
         raise Http404

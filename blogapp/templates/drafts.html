@@ -51,7 +51,7 @@
   <!-- <p>{{ blog.content | truncatewords_html:30 | safe}}</p> -->
   <br />
   <p>
-    <a href="#">View</a>
+    <a href="{% url 'view_draft_blog' blog=blog.id slug=blog.slug %}">View</a>
     <a href="{% url "publish_blog" blog=blog.id %}">Publish</a>
     <a href="{% url 'edit_blog' blog=blog.id slug=blog.slug %}">Edit</a>
     <a href="{% url 'delete_blog' blog=blog.id published=0 %}">Delete</a>
