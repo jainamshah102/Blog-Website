@@ -26,7 +26,6 @@ def view_blog(request, id, slug):
         return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked})
 
 
-
 @login_required
 def like(request):
     if request.method == "POST":

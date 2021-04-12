@@ -78,8 +78,7 @@
     margin-left: 20px;
     margin-right: 20px;
   }
-
-
+  
 </style>
 
 <div class="wrap">
@@ -92,7 +91,7 @@
     <br />
     <hr />
     <br />
-    <a style = "color: white;" href="{% url "view_profile" email=author.email %}"><p class="author">{{author.name}}</p></a>
+    <a style = "color: white;" href="{% url "view_profile" email=author.email %}"><p class="author" style="text-decoration: underline;">{{author.name}}</p></a>
     <br />
     <hr />
     <br />
