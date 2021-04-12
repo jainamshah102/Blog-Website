@@ -156,16 +156,17 @@
 
         {% if user.is_authenticated %}
 
-        <li><a href="{% url 'view_drafts' %}">Draft</a></li>
-        <li><a href="{% url 'new_blog' %}">New Blog</a></li>
-        <li><a href="{% url 'view_profile' %}">Profile</a></li>
-        <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
-        <li><a href="{% url 'logout' %}">Logout</a></li>
+          <li><a href="{% url 'view_drafts' %}">Drafts</a></li>
+          <li><a href="{% url 'view_published' %}">Published</a></li>
+          <li><a href="{% url 'new_blog' %}">New Blog</a></li>
+          <li><a href="{% url 'view_profile' %}">Profile</a></li>
+          <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
 
         {% else %}
 
-        <li><a href="{% url 'login' %}">Login</a></li>
-        <li><a href="{% url 'register' %}">Register</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Register</a></li>
 
         {% endif %}
       </ul>

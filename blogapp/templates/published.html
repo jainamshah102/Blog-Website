@@ -51,10 +51,9 @@
   <!-- <p>{{ blog.content | truncatewords_html:30 | safe}}</p> -->
   <br />
   <p>
-    <a href="#">View</a>
-    <a href="{% url "publish_blog" blog=blog.id %}">Publish</a>
+    <a href="{% url 'view_blog'  id=blog.id slug=blog.slug %}">View</a>
     <a href="#">Edit</a>
-    <a href="{% url 'delete_blog' blog=blog.id published=0 %}">Delete</a>
+    <a href="{% url 'delete_blog' blog=blog.id published=1 %}">Delete</a>
   </p>
   <br />
   <hr id="line" />
@@ -64,7 +63,7 @@
   <br />
   {% endfor %} {% else %}
 
-  <h1 id="title">Ugh! No drafts yet</h1>
+  <h1 id="title">Ugh! No publish blogs</h1>
 
   {% endif %}
 </div>

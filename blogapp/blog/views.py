@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -70,3 +70,37 @@ def view_drafts(request):
         return render(request, 'drafts.html', {'blogs': blogs})
 
     return render(request, 'drafts.html')
+
+
+@login_required
+def view_published(request):
+
+    if request.method == "GET":
+        blogs = Blog.objects.filter(author = request.user, status=1)
+
+        return render(request, 'published.html', {'blogs': blogs})
+
+    return render(request, 'published.html')
+
+
+@login_required
+def publish_blog(request, blog):
+
+    if request.method == "GET":
+        blog = Blog.objects.get(id = blog)
+        blog.publish()
+        return redirect('view_blog', id=blog.id, slug=blog.slug)
+
+    return render(request, 'drafts.html')
+
+@login_required
+def delete_blog(request, blog, published=0):
+
+    if request.method == "GET":
+        blog = Blog.objects.get(id = blog)
+        blog.delete()
+
+    if published:
+        return HttpResponseRedirect(reverse('view_published'))
+    else:
+        return HttpResponseRedirect(reverse('view_drafts'))
