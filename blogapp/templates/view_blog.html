@@ -119,6 +119,26 @@
     margin: 15px;
   }
 
+
+  .wrapper {
+      text-align: center;
+    }
+  .button {
+    position: absolute;
+    top: 50%;
+    background-color: rgb(34, 47, 62);
+  }
+
+  #follow {
+    background-color: white;
+    color: rgb(34, 47, 62);
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: white;
+    width: 50%;
+    height: 30%;
+  }
+
 </style>
 
 <div class="wrap">
@@ -137,7 +157,27 @@
     <br />
     <br />
     <p class="author" style="font-size: 20px">{{author.about}}</p>
-    <br /><br /><br />
+    <br />
+    <hr />
+    <br />
+    <br />
+
+    {% if user != author %}
+    <div id="follow-ajax">
+      {% if follows %}
+        <div class="wrapper">
+          <button id="follow">
+            <span class="ui-button-text">Unfollow</span>
+          </button>
+        </div>
+      {% else %}
+        <div class="wrapper">
+          <span class="ui-button-text">Follow</span>
+        </div>
+      {% endif %}
+      </div>
+    {% endif %}
+
   </div>
 
   <div class="floatright">
@@ -168,7 +208,7 @@
       <br />
 
       <br><br>
-      
+
       <br>
       <div id="comments-list">
         {% if comments %}
@@ -235,6 +275,28 @@
           `)
         }); 
         $('#comment').val('');
+      },
+    });
+  });
+
+
+  $("#follow").click(function () {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'follow' %}",
+      data: {
+        author: "{{ author.id }}",
+        operation: "follow",
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        if (response.follows) {
+          $('#follow span').text('Unfollow');
+        } else {
+          $('#follow span').text('Follow');
+        }
       },
     });
   });

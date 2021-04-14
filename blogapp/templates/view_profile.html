@@ -93,6 +93,23 @@
       height: 5px;
     }
 
+    .wrapper {
+      text-align: center;
+    }
+    .button {
+      position: absolute;
+      top: 50%;
+      background-color: rgb(34, 47, 62);
+    }
+
+    #follow {
+      background-color: white;
+      color: rgb(34, 47, 62);
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: white;
+    }
+
 </style>
 
 
@@ -114,26 +131,35 @@
       <br />
       <p id="about" style="font-size: 20px">{{user.about}}</p>
       <br />
+      <hr />
       <br />
       <br />
 
+      <div class="wrapper">
+        <a href="#"><button id="follow">Follow</button></a>
+      </div>
     </div>
 
     <div class="floatright">
-        {% for blog in blogs %}
-            <h1 id="title">{{ blog.title }}</h1>
-            <p>{{ blog.content | truncatewords_html:30 | safe}}</p>
-            <br>
-            <a id = "link" style="color: green;" href="{% url "view_blog" id=blog.id slug=blog.slug %}">Read More</a>
-            <br />
-            <br />
-            <br />
-            <hr id="line">
-            
-            <br>
-            <br>
-            <br>
-        {% endfor %}
+        {% if blogs %}
+
+          {% for blog in blogs %}
+              <h1 id="title">{{ blog.title }}</h1>
+              <p>{{ blog.content | truncatewords_html:30 | safe}}</p>
+              <br>
+              <a id = "link" style="color: green;" href="{% url "view_blog" id=blog.id slug=blog.slug %}">Read More</a>
+              <br />
+              <br />
+              <br />
+              <hr id="line">
+              
+              <br>
+              <br>
+              <br>
+          {% endfor %}
+        {% else %}
+            <h1 id="title">Ugh no blogs yet</h1>
+        {% endif %}
     </div>
   </div>
 

@@ -8,6 +8,7 @@ from .models import Blog, Like, Comment
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 import json
+from user.models import User, Follow
 
 
 
@@ -16,8 +17,6 @@ def get_comments(blog):
 
     response = []
     for comment in comments:
-        print(comment.timestamp.date())
-        print(comment.timestamp.day)
         response.append({
             "comment": comment.comment,
             "timestamp": comment.timestamp.strftime('%Y-%m-%d    %H:%M %p').__str__(),
@@ -31,15 +30,21 @@ def view_blog(request, id, slug):
     if request.method == "GET":
         blog = Blog.objects.get(id=id, slug=slug)
         liked = False
+        follows = False
 
-        print(get_comments(blog.id))
         try:
             Like.objects.get(user=request.user, blog=blog)
             liked=True
         except:
             pass
-        comments = Comment.objects.filter(blog=blog)
-        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "comments": get_comments(blog)})
+
+        try:
+            Follow.objects.get(user=request.user, author=blog.author)
+            follows = True
+        except:
+            pass
+
+        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "follows": follows, "comments": get_comments(blog)})
 
 
 @login_required
@@ -75,7 +80,6 @@ def comment(request):
             comment.save()
 
         content = {"comments": get_comments(blog)}
-        print(content)
         return HttpResponse(json.dumps(content))
 
 

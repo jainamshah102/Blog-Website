@@ -9,7 +9,8 @@ from .forms import UserForm, UpdateForm
 from blog.models import Blog, Like, Comment
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
-from .models import User
+from .models import User, Follow
+import json
 
 
 def index(request):
@@ -106,3 +107,28 @@ def edit_profile(request):
         return render(request, 'edit_profile.html', {'user': request.user})
 
     return render(request, 'edit_profile.html')
+
+
+@login_required
+def follow(request):
+    
+    if request.method == "POST" and request.POST.get('operation') == "follow" and request.is_ajax():
+        author = request.POST.get("author", None)
+
+        if author != request.user.id:
+            author = User.objects.get(id=author)
+
+            follows = False
+
+            try:
+                follow = Follow.objects.get(user=request.user, author=author)
+                follow.delete()
+                follows = False
+            except:
+                follow = Follow(user=request.user, author = author)
+                follow.save()
+                follows = True
+
+            content = {"follows": follows}
+
+            return HttpResponse(json.dumps(content))
