@@ -16,8 +16,8 @@ class LikeAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'blog','comment',)
-    list_filter = ('user', 'blog',)
+    list_display = ('user', 'blog','comment','timestamp')
+    list_filter = ('user', 'blog','timestamp')
     search_fields = ['user', 'blog']
 
     

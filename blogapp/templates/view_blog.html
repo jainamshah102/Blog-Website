@@ -93,7 +93,7 @@
     cursor: pointer;
     border: none;
     border-radius: 20px;
-    box-shadow: 2px 2px 7px #38d39f70;
+    box-shadow: 2px 2px 7px rgb(34, 47, 62);
     background: white;
     color: rgb(34, 47, 62);
     width: 80px;
@@ -107,8 +107,18 @@
     color: white;
     background-color: rgb(34, 47, 62);
     box-shadow: none;
+    
   }
-  
+
+  #comment-list{
+    padding: 20px;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px rgb(34, 47, 62);
+    margin: 15px;
+  }
+
 </style>
 
 <div class="wrap">
@@ -147,23 +157,31 @@
     {% endif %}
 
     <p class="author">Thoughts</p>
-
+    <br />
+    <br />
       <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
        <br />
        <br />
-       <br />
-       <br />
 
-       <a id = "post-comment">Post</a>
-       
+
+       <a id = "post-comment"><button class='submit-btn'>Post</button></a>
       <br />
 
-
-      <br><br><br>
+      <br><br>
+      
+      <br>
       <div id="comments-list">
-        {% for comment in comments %}
-          <p>{{comment.comment}}</p>
-        {% endfor %}
+        {% if comments %}
+          <p class="author">Responses</p>
+          {% for comment in comments %}
+          <div id='comment-list'> 
+            <p>{{comment.comment}}</p>
+            <p style="float: right;">{{comment.timestamp}}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="author">Ugh no responses yet!</p>
+        {% endif %}
       </div>
 
   </div>
@@ -208,8 +226,15 @@
       success: function (response) {
         $('#comments-list').empty();
         response.comments.forEach(comment => {
-          $('#comments-list').append("<p>" + comment.comment + "</p>")
+          $('#comments-list').append(`
+
+          <div id='comment-list'> 
+          <p>${comment.comment}</p>
+          <p style="float: right;">${comment.timestamp}</p>
+        </div>
+          `)
         }); 
+        $('#comment').val('');
       },
     });
   });

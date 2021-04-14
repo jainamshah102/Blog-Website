@@ -12,12 +12,15 @@ import json
 
 
 def get_comments(blog):
-    comments = Comment.objects.filter(blog = blog)
+    comments = Comment.objects.filter(blog = blog).order_by('-timestamp')
 
     response = []
     for comment in comments:
+        print(comment.timestamp.date())
+        print(comment.timestamp.day)
         response.append({
             "comment": comment.comment,
+            "timestamp": comment.timestamp.strftime('%Y-%m-%d    %H:%M %p').__str__(),
         })
 
     return response
@@ -29,13 +32,14 @@ def view_blog(request, id, slug):
         blog = Blog.objects.get(id=id, slug=slug)
         liked = False
 
+        print(get_comments(blog.id))
         try:
             Like.objects.get(user=request.user, blog=blog)
             liked=True
         except:
             pass
         comments = Comment.objects.filter(blog=blog)
-        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "comments": comments})
+        return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "comments": get_comments(blog)})
 
 
 @login_required
@@ -64,8 +68,6 @@ def comment(request):
         comment = request.POST.get("comment", None)
         blog = request.POST.get("blog", None)
 
-        print(comment, blog)
-
         blog = Blog.objects.get(id=blog)
 
         if blog and comment:
@@ -75,7 +77,6 @@ def comment(request):
         content = {"comments": get_comments(blog)}
         print(content)
         return HttpResponse(json.dumps(content))
-
 
 
 @login_required
