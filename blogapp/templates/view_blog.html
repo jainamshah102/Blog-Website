@@ -218,6 +218,8 @@
           {% for comment in comments %}
           <div id='comment-list'> 
             <p>{{comment.comment}}</p>
+            <p style="float: right;">~  {{comment.author}}</p>
+            <br>
             <p style="float: right;">{{comment.timestamp}}</p>
           </div>
           {% endfor %}
@@ -272,6 +274,8 @@
 
           <div id='comment-list'> 
           <p>${comment.comment}</p>
+          <p style="float: right;">~  ${comment.author}</p>
+            <br>
           <p style="float: right;">${comment.timestamp}</p>
         </div>
           `)

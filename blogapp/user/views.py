@@ -115,7 +115,6 @@ def follow(request):
     
     if request.method == "POST" and request.POST.get('operation') == "follow" and request.is_ajax():
         author = request.POST.get("author", None)
-        print(author)
         if author != request.user.id:
             author = User.objects.get(id=author)
 

@@ -20,6 +20,7 @@ def get_comments(blog):
         response.append({
             "comment": comment.comment,
             "timestamp": comment.timestamp.strftime('%Y-%m-%d    %H:%M %p').__str__(),
+            "author": comment.user.email,
         })
 
     return response
