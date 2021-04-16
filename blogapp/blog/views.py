@@ -11,7 +11,6 @@ import json
 from user.models import User, Follow
 
 
-
 def get_comments(blog):
     comments = Comment.objects.filter(blog = blog).order_by('-timestamp')
 
@@ -174,7 +173,6 @@ def edit_blog(request, blog, slug):
 
         return render(request, 'edit_blog.html', {'blog': blog})
 
-    
     else:
         raise Http404
 
@@ -188,5 +186,3 @@ def view_draft_blog(request, blog, slug):
 
     else:
         raise Http404
-
-
