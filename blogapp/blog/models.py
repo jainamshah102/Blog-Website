@@ -43,6 +43,15 @@ class Blog(models.Model):
         super().save()
 
 
+    def likes(self):
+        return Like.objects.filter(blog=self).count()
+
+
+    def comments(self):
+        return Comment.objects.filter(blog=self).count()
+
+
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete = models.CASCADE)

@@ -168,12 +168,13 @@ def edit_blog(request, blog, slug):
                 edited_blog.save()
 
                 if blog.status == 0:
-                    return redirect('view_draft_blog', id=blog.id, slug=blog.slug)
+                    return redirect('view_draft_blog', blog=blog.id, slug=blog.slug)
                 else:
                     return redirect('view_blog', id=blog.id, slug=blog.slug)
 
         return render(request, 'edit_blog.html', {'blog': blog})
 
+    
     else:
         raise Http404
 

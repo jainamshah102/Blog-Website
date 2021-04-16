@@ -12,19 +12,22 @@ from django.utils.http import is_safe_url
 from .models import User, Follow
 import json
 from notifications.signals import notify
+from django.db.models import Count
 
 
 def index(request):
 
     if request.method == "GET":
-        blogs = Blog.objects.filter(status=1)
+        blogs = Blog.objects.filter(status=1).order_by('-published_on')
+        blogs = sorted(blogs, key=lambda b: b.likes() * b.comments(), reverse=True)[:6]
+
         likes_comments = []
+
         for blog in blogs:
-            likes = Like.objects.filter(blog = blog).count()
-            comments = Comment.objects.filter(blog = blog).count()
-            likes_comments.append({"likes": likes, "comments": comments})
+            likes_comments.append({"likes": blog.likes(), "comments": blog.comments()})
 
         return render(request, 'index.html', {"blogs_data": zip(blogs, likes_comments)})
+
 
 def register(request):
 
