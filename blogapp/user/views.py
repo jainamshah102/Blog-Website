@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 from .models import User, Follow
 import json
+from notifications.signals import notify
 
 
 def index(request):
@@ -85,11 +86,11 @@ def view_profile(request, email = None):
     if request.method == "GET":
         if not email:
             blogs = Blog.objects.filter(author = request.user, status=1)
-            return render(request, 'view_profile.html', {"user": request.user, 'blogs': blogs})
+            return render(request, 'view_profile.html', {"user": request.user, 'blogs': blogs, "current_user": request.user})
         else:
             user = User.objects.get(email = email)
             blogs = Blog.objects.filter(author = user,  status=1)
-            return render(request, 'view_profile.html', {'user': user, 'blogs': blogs})
+            return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user})
 
     return render(request, 'view_profile.html')
 
@@ -114,7 +115,7 @@ def follow(request):
     
     if request.method == "POST" and request.POST.get('operation') == "follow" and request.is_ajax():
         author = request.POST.get("author", None)
-
+        print(author)
         if author != request.user.id:
             author = User.objects.get(id=author)
 
