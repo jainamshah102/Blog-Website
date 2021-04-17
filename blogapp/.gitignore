@@ -1,3 +1,4 @@
 static/admin
 static/django_tinymce
 static/tinymce
+*.pyc
