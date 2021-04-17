@@ -30,7 +30,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     about = models.CharField(max_length=1000, blank=True, default="")
     name = models.CharField(max_length=100, blank=True, default="")
     gender = models.CharField('gender', max_length=1, choices=GENDER_CHOICES)
-    avatar = models.ImageField(upload_to=rename_file_upload, null=True, blank=True)
+    avatar = models.ImageField(
+        upload_to=rename_file_upload, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -40,26 +41,25 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-
     def save(self, *args, **kwargs):
-        
+
         if self.gender and (self.avatar in ("male.jpg", "female.jpg") or not self.avatar):
             self.avatar = 'male.jpg' if self.gender == "M" else 'female.jpg'
 
         super().save(*args, **kwargs)
 
-
     def followers(self):
         return Follow.objects.filter(author=self).count()
-
 
     def publishes(self):
         return blog.models.Blog.objects.filter(author=self, status=1).count()
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user')
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author')
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

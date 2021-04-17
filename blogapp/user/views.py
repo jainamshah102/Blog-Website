@@ -4,41 +4,44 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages 
+from django.contrib import messages
 from .forms import UserForm, UpdateForm
 from blog.models import Blog, Like, Comment
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 from .models import User, Follow
-import json
 from notifications.signals import notify
 from django.db.models import Count
+import json
 
 
 def index(request):
 
     if request.method == "GET":
         top_blogs = Blog.objects.filter(status=1).order_by('-published_on')
-        top_blogs = sorted(top_blogs, key=lambda b: b.likes() * b.comments(), reverse=True)[:6]
+        top_blogs = sorted(top_blogs, key=lambda b: b.likes()
+                           * b.comments(), reverse=True)[:6]
 
         likes_comments = []
 
         for blog in top_blogs:
-            likes_comments.append({"likes": blog.likes(), "comments": blog.comments()})
+            likes_comments.append(
+                {"likes": blog.likes(), "comments": blog.comments()})
 
         top_authors = User.objects.all()
-        top_authors = sorted(top_authors, key=lambda a: a.followers(), reverse=True)[:10]       
+        top_authors = sorted(
+            top_authors, key=lambda a: a.followers(), reverse=True)[:10]
 
         author_followers = []
-        
-        for author in top_authors:
-            author_followers.append({"followers": author.followers(), "publishes": author.publishes()})
 
+        for author in top_authors:
+            author_followers.append(
+                {"followers": author.followers(), "publishes": author.publishes()})
 
         return render(request, 'index.html', {
-            "blogs_data": zip(top_blogs, likes_comments), 
+            "blogs_data": zip(top_blogs, likes_comments),
             "top_authors": zip(top_authors, author_followers)
-            })
+        })
 
 
 def register(request):
@@ -58,7 +61,6 @@ def register(request):
     return render(request, 'registration.html')
 
 
-
 def login_user(request):
 
     if request.method == "POST":
@@ -74,14 +76,14 @@ def login_user(request):
             if nxt is None:
                 return HttpResponseRedirect(reverse('index'))
 
-            elif not is_safe_url(url=nxt,allowed_hosts={request.get_host()},require_https=request.is_secure()):
+            elif not is_safe_url(url=nxt, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
                 return HttpResponseRedirect(reverse('index'))
 
             return redirect(nxt)
 
         else:
             return render(request, 'login.html', {"error": "Invalid username or password!"})
-    
+
     return render(request, 'login.html', {})
 
 
@@ -96,15 +98,15 @@ def logout_user(request):
 
 
 @login_required
-def view_profile(request, email = None):
+def view_profile(request, email=None):
 
     if request.method == "GET":
         if not email:
-            blogs = Blog.objects.filter(author = request.user, status=1)
+            blogs = Blog.objects.filter(author=request.user, status=1)
             return render(request, 'view_profile.html', {"user": request.user, 'blogs': blogs, "current_user": request.user})
         else:
-            user = User.objects.get(email = email)
-            blogs = Blog.objects.filter(author = user,  status=1)
+            user = User.objects.get(email=email)
+            blogs = Blog.objects.filter(author=user,  status=1)
             return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user})
 
     return render(request, 'view_profile.html')
@@ -127,7 +129,7 @@ def edit_profile(request):
 
 @login_required
 def follow(request):
-    
+
     if request.method == "POST" and request.POST.get('operation') == "follow" and request.is_ajax():
         author = request.POST.get("author", None)
         if author != request.user.id:
@@ -140,7 +142,7 @@ def follow(request):
                 follow.delete()
                 follows = False
             except:
-                follow = Follow(user=request.user, author = author)
+                follow = Follow(user=request.user, author=author)
                 follow.save()
                 follows = True
 

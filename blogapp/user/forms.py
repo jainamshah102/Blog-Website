@@ -36,7 +36,7 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError("Password is too long!")
 
         nums = [str(i) for i in range(10)]
-        
+
         number, lower, upper, special = False, False, False, False
 
         for p in password:
@@ -52,11 +52,9 @@ class UserForm(forms.ModelForm):
         if not (number and lower and upper and special):
             raise forms.ValidationError("Password invalid")
 
-
     class Meta:
         model = User
         fields = ('email', 'about', 'gender', 'avatar', 'password', 'name')
-
 
 
 class UpdateForm(forms.ModelForm):
