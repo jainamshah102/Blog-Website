@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import CustomUserManager
+import blog
 import uuid
 import os
 
@@ -36,6 +37,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
+    def __str__(self):
+        return self.email
+
 
     def save(self, *args, **kwargs):
         
@@ -45,8 +49,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
 
-    def __str__(self):
-        return self.email
+    def followers(self):
+        return Follow.objects.filter(author=self).count()
+
+
+    def publishes(self):
+        return blog.models.Blog.objects.filter(author=self, status=1).count()
 
 
 class Follow(models.Model):

@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import User
+import user
 from django.utils.text import slugify
 from django.utils import timezone
 from tinymce.models import HTMLField
@@ -19,7 +19,7 @@ STATUS = (
 
 
 class Blog(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=False, null=False)
     content = HTMLField()
     slug = models.SlugField(max_length=200)
@@ -27,6 +27,7 @@ class Blog(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now= True)
     published_on  = models.DateTimeField(blank=True, null=True)
+
 
     def __str__(self):
         return self.title
@@ -53,7 +54,7 @@ class Blog(models.Model):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete = models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -62,7 +63,7 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete = models.CASCADE)
     comment = models.CharField(max_length=500, blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)

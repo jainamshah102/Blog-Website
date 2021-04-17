@@ -18,15 +18,27 @@ from django.db.models import Count
 def index(request):
 
     if request.method == "GET":
-        blogs = Blog.objects.filter(status=1).order_by('-published_on')
-        blogs = sorted(blogs, key=lambda b: b.likes() * b.comments(), reverse=True)[:6]
+        top_blogs = Blog.objects.filter(status=1).order_by('-published_on')
+        top_blogs = sorted(top_blogs, key=lambda b: b.likes() * b.comments(), reverse=True)[:6]
 
         likes_comments = []
 
-        for blog in blogs:
+        for blog in top_blogs:
             likes_comments.append({"likes": blog.likes(), "comments": blog.comments()})
 
-        return render(request, 'index.html', {"blogs_data": zip(blogs, likes_comments)})
+        top_authors = User.objects.all()
+        top_authors = sorted(top_authors, key=lambda a: a.followers(), reverse=True)[:10]       
+
+        author_followers = []
+        
+        for author in top_authors:
+            author_followers.append({"followers": author.followers(), "publishes": author.publishes()})
+
+
+        return render(request, 'index.html', {
+            "blogs_data": zip(top_blogs, likes_comments), 
+            "top_authors": zip(top_authors, author_followers)
+            })
 
 
 def register(request):

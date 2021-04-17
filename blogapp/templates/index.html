@@ -168,7 +168,6 @@
     font-weight: normal;
   }
 
-  /* MEDIA QUERIES */
   @media screen and (max-width: 1285px) {
     .cards-wrapper {
       grid-template-columns: 1fr 1fr;
@@ -207,10 +206,40 @@
     }
   }
 
+  hr {
+    border: none;
+    height: 3px;
+    color: white;
+    background-color: white;
+    margin-bottom: 20px;
+  }
+
+  #profile-container {
+    margin-left: 30%;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    align-content: center;
+    background-size: contain;
+    background-position: center;
+  }
+
+  #profile-container img {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
 </style>
 <h1 style="font-size: 6vw" id="slogan">Where good ideas find you</h1>
 
-<h1 style="font-size: 3vw" id="slogan">Trending on White Ink</h1>
+<h1 style="font-size: 3vw; padding-bottom: 0px;" id="slogan">Trending on White Ink</h1>
 
 <section class="cards-wrapper">
   {% for blog, likes_comments in blogs_data %}
@@ -227,5 +256,31 @@
   </div>
   {% endfor %}
 </section>
+<hr>
+
+
+<h1 style="font-size: 3vw; padding-bottom: 0px;" id="slogan">Famous authors to follow</h1>
+
+
+<section class="cards-wrapper">
+  {% for author, data in top_authors %}
+    <div class="card-grid-space">
+      <a class="card" href="{% url 'view_profile' email=author.email %}">
+        <div>
+          <div id="profile-container">
+            <img id="profileImage" src="{{author.avatar.url}}" />
+          </div>
+          <h1>
+            {{ author.name }}
+          </h1>
+          <p>{{ author.about }}</p>
+          <p>Followers {{data.followers}} Publishes {{data.publishes}}</p>
+          <div class="date">{{ blog.published_on }}</div>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
 
 {% endblock content %}
