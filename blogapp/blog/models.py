@@ -5,7 +5,6 @@ from django.utils import timezone
 from tinymce.models import HTMLField
 
 
-
 def rename_file_upload(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (uuid.uuid4(), ext)
@@ -25,37 +24,31 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=200)
     status = models.IntegerField(choices=STATUS, default=0)
     created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now= True)
-    published_on  = models.DateTimeField(blank=True, null=True)
-
+    updated_on = models.DateTimeField(auto_now=True)
+    published_on = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.title
 
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
 
     def publish(self):
         self.published_on = timezone.now()
         self.status = 1
         super().save()
 
-
     def likes(self):
         return Like.objects.filter(blog=self).count()
-
 
     def comments(self):
         return Comment.objects.filter(blog=self).count()
 
 
-
 class Like(models.Model):
     user = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
-    blog = models.ForeignKey(Blog, on_delete = models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -64,10 +57,9 @@ class Like(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
-    blog = models.ForeignKey(Blog, on_delete = models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
-
 
     def __str__(self):
         return f"{self.user.email} - {self.blog.title}"

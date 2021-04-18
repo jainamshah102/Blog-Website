@@ -3,3 +3,4 @@ static/django_tinymce
 static/tinymce
 *.pyc
 *.sqlite3
+media/avatars

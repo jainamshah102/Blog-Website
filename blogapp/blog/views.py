@@ -12,7 +12,7 @@ from user.models import User, Follow
 
 
 def get_comments(blog):
-    comments = Comment.objects.filter(blog = blog).order_by('-timestamp')
+    comments = Comment.objects.filter(blog=blog).order_by('-timestamp')
 
     response = []
     for comment in comments:
@@ -34,7 +34,7 @@ def view_blog(request, id, slug):
 
         try:
             Like.objects.get(user=request.user, blog=blog)
-            liked=True
+            liked = True
         except:
             pass
 
@@ -51,15 +51,15 @@ def view_blog(request, id, slug):
 def like(request):
     if request.method == "POST":
         if request.POST.get("operation") == "like_submit" and request.is_ajax():
-            blog=request.POST.get("blog",None)
+            blog = request.POST.get("blog", None)
 
-            blog = Blog.objects.get(id = blog)
+            blog = Blog.objects.get(id=blog)
             try:
                 like = Like.objects.get(user=request.user, blog=blog)
                 like.delete()
                 liked = False
             except:
-                like = Like(user = request.user, blog = blog)
+                like = Like(user=request.user, blog=blog)
                 like.save()
                 liked = True
 
@@ -76,7 +76,7 @@ def comment(request):
         blog = Blog.objects.get(id=blog)
 
         if blog and comment:
-            comment = Comment(user=request.user, blog=blog, comment = comment)
+            comment = Comment(user=request.user, blog=blog, comment=comment)
             comment.save()
 
         content = {"comments": get_comments(blog)}
@@ -87,7 +87,7 @@ def comment(request):
 def new_blog(request):
 
     if request.method == "POST":
-        blog = BlogForm(data = request.POST)
+        blog = BlogForm(data=request.POST)
 
         if blog.is_valid():
             new_blog = blog.save(commit=False)
@@ -102,7 +102,7 @@ def new_blog(request):
 def view_drafts(request):
 
     if request.method == "GET":
-        blogs = Blog.objects.filter(author = request.user, status=0)
+        blogs = Blog.objects.filter(author=request.user, status=0)
 
         return render(request, 'drafts.html', {'blogs': blogs})
 
@@ -113,7 +113,7 @@ def view_drafts(request):
 def view_published(request):
 
     if request.method == "GET":
-        blogs = Blog.objects.filter(author = request.user, status = 1)
+        blogs = Blog.objects.filter(author=request.user, status=1)
 
         return render(request, 'published.html', {'blogs': blogs})
 
@@ -122,7 +122,7 @@ def view_published(request):
 
 @login_required
 def publish_blog(request, blog):
-    blog = Blog.objects.get(id = blog)
+    blog = Blog.objects.get(id=blog)
 
     if blog.author == request.user:
         if request.method == "GET":
@@ -139,7 +139,7 @@ def publish_blog(request, blog):
 
 @login_required
 def delete_blog(request, blog, published=0):
-    blog = Blog.objects.get(id = blog)
+    blog = Blog.objects.get(id=blog)
 
     if blog.author == request.user:
 
@@ -156,7 +156,7 @@ def delete_blog(request, blog, published=0):
 
 @login_required
 def edit_blog(request, blog, slug):
-    blog = Blog.objects.get(id = blog, slug = slug)
+    blog = Blog.objects.get(id=blog, slug=slug)
 
     if blog.author == request.user:
 
@@ -179,7 +179,7 @@ def edit_blog(request, blog, slug):
 
 @login_required
 def view_draft_blog(request, blog, slug):
-    blog = Blog.objects.get(id = blog, slug = slug)
+    blog = Blog.objects.get(id=blog, slug=slug)
 
     if blog.author == request.user:
         return render(request, 'view_draft_blog.html', {'blog': blog})
