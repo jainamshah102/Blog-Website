@@ -1,0 +1,44 @@
+#line {
+    border: 0;
+    clear: both;
+    display: block;
+    background-color: rgb(34, 47, 62);
+    height: 5px;
+}
+
+#link {
+    color: green;
+}
+
+#title {
+    font-size: 3vw;
+    font-family: "Times New Roman", Times, serif;
+    align-self: center;
+    color: white;
+}
+
+#drafts {
+    background-color: black;
+    padding: 20px;
+}
+
+a {
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+a.active,
+a:hover {
+    background: white;
+    color: rgb(34, 47, 62);
+    transition: 0.5s;
+}
+
+p {
+    display: block;
+
+    line-height: 30px;
+}

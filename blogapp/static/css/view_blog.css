@@ -1,0 +1,136 @@
+body {
+    background-color: rgb(34, 47, 62);
+}
+.wrap {
+    width: 100%;
+}
+
+.floatleft {
+    float: left;
+    width: 20%;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.floatright {
+    padding: 2%;
+    float: right;
+    background-color: white;
+    width: 80%;
+    color: rgb(34, 47, 62);
+}
+
+#title {
+    font-size: 3vw;
+    font-family: "Times New Roman", Times, serif;
+    margin-left: 50px;
+    align-self: center;
+}
+
+#profile-container {
+    margin-left: 30%;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    align-content: center;
+    background-size: contain;
+    background-position: center;
+}
+
+.author {
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+}
+
+#co {
+    margin-left: 40px;
+}
+
+#profile-container img {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+hr {
+    border: none;
+    height: 1px;
+    color: white;
+    background-color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#comment {
+    height: 100%;
+    width: 100%;
+    border: white;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.submit-btn {
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px rgb(34, 47, 62);
+    background: white;
+    color: rgb(34, 47, 62);
+    width: 80px;
+    align-items: center;
+    transition: all 1s;
+    height: 60px;
+    width: 120pxpx;
+}
+
+.submit-btn:hover {
+    color: white;
+    background-color: rgb(34, 47, 62);
+    box-shadow: none;
+}
+
+#comment-list {
+    padding: 20px;
+    background-color: rgb(34, 47, 62);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px rgb(34, 47, 62);
+    margin: 15px;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    background-color: rgb(34, 47, 62);
+}
+
+#follow {
+    background-color: white;
+    color: rgb(34, 47, 62);
+    padding: 15px;
+    border-radius: 20px;
+    width: 50%;
+    height: 30%;
+}
+
+#follow:hover {
+    color: white;
+    background-color: rgb(34, 47, 62);
+    box-shadow: none;
+}

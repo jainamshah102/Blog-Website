@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+    outline: none;
+}
+
+h1 {
+    color: white;
+    font-size: 35px;
+    font-weight: 800;
+    align-items: center;
+    text-align: center;
+}
+
+.error {
+    color: red;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.flex-container {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-container {
+    width: 500px;
+    height: 350px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 700px;
+    margin-top: 5px;
+    padding-top: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: #1f1f1f;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
+}
+
+.subtitle {
+    font-size: 16px;
+    color: rgb(34, 47, 62);
+}
+
+input {
+    padding: 5%;
+    border: none;
+    border-bottom: solid rgb(143, 143, 143) 1px;
+    margin-bottom: 30px;
+    background: none;
+    height: 35px;
+    width: 300px;
+    color: white;
+}
+
+.submit-btn {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 7px rgb(34, 47, 62);
+    background: white;
+    color: rgb(34, 47, 62);
+    width: 80px;
+    align-items: center;
+    transition: all 1s;
+}
+
+.submit-btn:hover {
+    background-color: rgb(34, 47, 62);
+    color: white;
+    box-shadow: none;
+}
+
+#imageUpload {
+    display: none;
+}
+
+#profileImage {
+    cursor: pointer;
+}
+
+#profile-container {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    align-content: center;
+    margin-left: 70px;
+}
+
+#profile-container img {
+    width: 150px;
+    height: 150px;
+}

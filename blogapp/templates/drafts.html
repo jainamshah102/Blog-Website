@@ -4,26 +4,26 @@
 
 <link rel="stylesheet" href="{% static 'css/drafts.css' %}">
 <div id="drafts">
-  {% if blogs %} {% for blog in blogs %}
-  <h1 id="title">{{ blog.title }}</h1>
-  <br />
-  <p>
-    <a href="{% url 'view_draft_blog' blog=blog.id slug=blog.slug %}">View</a>
-    <a href="{% url 'publish_blog' blog=blog.id %}">Publish</a>
-    <a href="{% url 'edit_blog' blog=blog.id slug=blog.slug %}">Edit</a>
-    <a href="{% url 'delete_blog' blog=blog.id published=0 %}">Delete</a>
-  </p>
-  <br />
-  <hr id="line" />
+    {% if blogs %} {% for blog in blogs %}
+    <h1 id="title">{{ blog.title }}</h1>
+    <br />
+    <p>
+        <a href="{% url 'view_draft_blog' blog=blog.id slug=blog.slug %}">View</a>
+        <a href="{% url 'publish_blog' blog=blog.id %}">Publish</a>
+        <a href="{% url 'edit_blog' blog=blog.id slug=blog.slug %}">Edit</a>
+        <a href="{% url 'delete_blog' blog=blog.id published=0 %}">Delete</a>
+    </p>
+    <br />
+    <hr id="line" />
 
-  <br />
-  <br />
-  <br />
-  {% endfor %} {% else %}
+    <br />
+    <br />
+    <br />
+    {% endfor %} {% else %}
 
-  <h1 id="title">Ugh! No drafts yet</h1>
+    <h1 id="title">Ugh! No drafts yet</h1>
 
-  {% endif %}
+    {% endif %}
 </div>
 
 {% endblock content %}

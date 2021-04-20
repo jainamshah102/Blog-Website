@@ -1,206 +1,68 @@
-{% extends "base.html" %} {% block content %} {% load static %}
-
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body:not(.user-is-tabbing) button:focus,
-  body:not(.user-is-tabbing) input:focus,
-  body:not(.user-is-tabbing) select:focus,
-  body:not(.user-is-tabbing) textarea:focus {
-    outline: none;
-  }
-
-  h1 {
-    color: rgb(129, 212, 250);
-    font-size: 35px;
-    font-weight: 800;
-    align-items: center;
-    text-align: center;
-  }
-
-
-  .flex-container {
-    margin-top: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .content-container {
-    width: 500px;
-    height: 350px;
-  }
-
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
-    margin-top: 5px;
-    padding-top: 20px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    background: #1f1f1f;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
-  }
-
-  .subtitle {
-    font-size: 16px;
-    color: rgb(129, 212, 250);
-  }
-
-  input {
-    padding: 5%;
-    border: none;
-    border-bottom: solid rgb(143, 143, 143) 1px;
-    margin-bottom: 30px;
-    background: none;
-    height: 35px;
-    width: 300px;
-    color: rgb(129, 212, 250);
-  }
-
-  .submit-btn {
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 2px 2px 7px #38d39f70;
-    background: black;
-    color: rgb(129, 212, 250);
-    width: 80px;
-    align-items: center;
-    transition: all 1s;
-  }
-
-  .submit-btn:hover {
-    color: rgb(129, 212, 250);
-    box-shadow: none;
-  }
-
-  #imageUpload {
-    display: none;
-  }
-
-  #profileImage {
-    cursor: pointer;
-  }
-
-  #profile-container {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    align-content: center;
-    margin-left: 70px;
-  }
-  
-  #profile-container img {
-    width: 150px;
-    height: 150px;
-  }
-</style>
-
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
 <div class="flex-container">
-  <div class="content-container">
-    <div class="form-container">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div class="content-container">
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <br />
+                <br />
 
-        <div id="profile-container">
-          <image
-            id="profileImage"
-            src="{{user.avatar.url}}"
-          />
+                <div id="profile-container">
+                    <image id="profileImage" src="{{user.avatar.url}}" />
+                </div>
+
+
+                <input id="imageUpload" type="file" name="avatar" placeholder="Photo" capture />
+
+                <br />
+                <input class="input" type="text" name="name" value={{user.email}} readonly placeholder="Name" />
+
+                <br />
+                <input class="input" type="text" name="name" value="{{user.name}}" required placeholder="Name" />
+
+                <br />
+                <input class="input" type="text" name="about" value="{{user.about}}" required placeholder="About" />
+
+
+                <div class="custom-select" style="width: 200px">
+                    <select name="gender" value={{user.gender}}>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                </div>
+
+                <br />
+                <input type="submit" value="Save" class="submit-btn" />
+            </form>
         </div>
-
-
-        <input
-          id="imageUpload"
-          type="file"
-          name="avatar"
-          placeholder="Photo"
-          capture
-        />
-
-        <br />
-        <input
-          class="input"
-          type="text"
-          name="name"
-          value={{user.email}}
-          readonly
-          placeholder="Name"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="text"
-          name="name"
-          value="{{user.name}}"
-          required
-          placeholder="Name"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="text"
-          name="about"
-          value="{{user.about}}"
-          required
-          placeholder="About"
-        />
-
-
-        <div class="custom-select" style="width: 200px">
-          <select name="gender" value = {{user.gender}}>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-            <option value="O">Other</option>
-          </select>
-        </div>
-
-        <br />
-        <input type="submit" value="Save" class="submit-btn" />
-      </form>
     </div>
-  </div>
 </div>
 
 <script>
-  $("#profileImage").click(function (e) {
-    $("#imageUpload").click();
-  });
+    $("#profileImage").click(function (e) {
+        $("#imageUpload").click();
+    });
 
-  function fasterPreview(uploader) {
-    if (uploader.files && uploader.files[0]) {
-      $("#profileImage").attr(
-        "src",
-        window.URL.createObjectURL(uploader.files[0])
-      );
+    function fasterPreview(uploader) {
+        if (uploader.files && uploader.files[0]) {
+            $("#profileImage").attr(
+                "src",
+                window.URL.createObjectURL(uploader.files[0])
+            );
+        }
     }
-  }
 
-  $("#imageUpload").change(function () {
-    fasterPreview(this);
-  });
+    $("#imageUpload").change(function () {
+        fasterPreview(this);
+    });
 </script>
 
 {% endblock content %}

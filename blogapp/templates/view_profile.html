@@ -1,214 +1,95 @@
-{% extends "base.html" %} {% block content %} {% load static %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-<style>
-      body {
-    background-color: rgb(34, 47, 62);
-  }
-  .wrap {
-    width: 100%;
-  }
-
-  .floatleft {
-    float: left;
-    width: 20%;
-    background-color: rgb(34, 47, 62);
-    color: white;
-    height: 100%;
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .floatright {
-    padding: 2%;
-    float: right;
-    background-color: white;
-    width: 80%;
-    color: rgb(34, 47, 62);
-  }
-
-  #title {
-    font-size: 3vw;
-    font-family: "Times New Roman", Times, serif;
-    margin-left: 50px;
-    align-self: center;
-  }
-
-  #profile-container {
-    margin-left: 30%;
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    align-content: center;
-    background-size: contain;
-    background-position: center;
-  }
-
-  .author {
-    align-content: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 30px;
-  }
-
-  #co {
-    margin-left: 40px;
-  }
-
-  #profile-container img {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
-  hr {
-    border: none;
-    height: 1px;
-    color: white;
-    background-color: white;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  #link{
-      color: green;
-  }
-
-    #about{
-        font-size: 1em;
-        font-style: italic;
-        padding: 10px;
-        text-align: center;
-    }
-
-    #line {
-      border: 0;
-      clear:both;
-      display:block;
-      background-color:rgb(34, 47, 62);
-      height: 5px;
-    }
-
-    .wrapper {
-      text-align: center;
-    }
-  .button {
-    position: absolute;
-    top: 50%;
-    background-color: rgb(34, 47, 62);
-  }
-
-  #follow {
-    background-color: white;
-    color: rgb(34, 47, 62);
-    padding: 15px;
-    border-radius: 20px;
-    width: 50%;
-    height: 30%;
-  }
-
-  #follow:hover {
-    color: white;
-    background-color: rgb(34, 47, 62);
-    box-shadow: none;
-  }
-
-    
-
-</style>
-
-
+<link rel="stylesheet" href="{% static 'css/view_profile.css' %}">
 
 <div class="wrap">
-  <div class="floatleft">
-    <br />
-    <div id="profile-container">
-      <img id="profileImage" src="{{user.avatar.url}}" />
-    </div>
-    <br />
-    <br />
-    <hr />
-    <br />
-    <p class="author">{{user.name}}</p>
-    <br />
-    <hr />
-    <br />
-    <br />
-    <p id="about" style="font-size: 20px">{{user.about}}</p>
-    <br />
-    <hr />
-    <br />
-    <br />
+    <div class="floatleft">
+        <br />
+        <div id="profile-container">
+            <img id="profileImage" src="{{user.avatar.url}}" />
+        </div>
+        <br />
+        <br />
+        <hr />
+        <br />
+        <p class="author">{{user.name}}</p>
+        <br />
+        <hr />
+        <br />
+        <br />
+        <p id="about" style="font-size: 20px">{{user.about}}</p>
+        <br />
+        <hr />
+        <br />
+        <br />
 
-    {% if user != current_user %}
-      <div id="follow-ajax">
-        {% if follows %}
-          <div class="wrapper">
-            <button id="follow">
-              <span class="ui-button-text">Unfollow</span>
-            </button>
-          </div>
-        {% else %}
-          <div class="wrapper">
-            <button id="follow">
-            <span class="ui-button-text">Follow</span>
-          </button>
-          </div>
+        {% if user != current_user %}
+        <div id="follow-ajax">
+            {% if follows %}
+            <div class="wrapper">
+                <button id="follow">
+                    <span class="ui-button-text">Unfollow</span>
+                </button>
+            </div>
+            {% else %}
+            <div class="wrapper">
+                <button id="follow">
+                    <span class="ui-button-text">Follow</span>
+                </button>
+            </div>
+            {% endif %}
+        </div>
         {% endif %}
-      </div>
-    {% endif %}
-  </div>
+    </div>
 
-  <div class="floatright">
-      {% if blogs %}
+    <div class="floatright">
+        {% if blogs %}
 
         {% for blog in blogs %}
-            <h1 id="title">{{ blog.title }}</h1>
-            <p>{{ blog.content | truncatewords_html:30 | safe}}</p>
-            <br>
-            <a id = "link" style="color: green;" href="{% url "view_blog" id=blog.id slug=blog.slug %}">Read More</a>
-            <br />
-            <br />
-            <br />
-            <hr id="line">
-            
-            <br>
-            <br>
-            <br>
+        <h1 id="title">{{ blog.title }}</h1>
+        <p>{{ blog.content | truncatewords_html:30 | safe}}</p>
+        <br>
+        <a id="link" style="color: green;" href="{% url 'view_blog' id=blog.id slug=blog.slug %}">Read More</a>
+        <br />
+        <br />
+        <br />
+        <hr id="line">
+
+        <br>
+        <br>
+        <br>
         {% endfor %}
-      {% else %}
-          <h1 id="title">Ugh no blogs yet</h1>
-      {% endif %}
-  </div>
+        {% else %}
+        <h1 id="title">Ugh no blogs yet</h1>
+        {% endif %}
+    </div>
 </div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-  $("#follow").click(function () {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'follow' %}",
-      data: {
-        author: "{{ user.id }}",
-        operation: "follow",
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      dataType: "json",
-      success: function (response) {
-        if (response.follows) {
-          $('#follow span').text('Unfollow');
-        } else {
-          $('#follow span').text('Follow');
-        }
-      },
+    $("#follow").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'follow' %}",
+            data: {
+                author: "{{ user.id }}",
+                operation: "follow",
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.follows) {
+                    $('#follow span').text('Unfollow');
+                } else {
+                    $('#follow span').text('Follow');
+                }
+            },
+        });
     });
-  });
 </script>
 
 {% endblock content %}

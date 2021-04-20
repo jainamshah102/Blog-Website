@@ -5,46 +5,46 @@
 <link rel="stylesheet" href="{% static 'css/edit_blog.css' %}">
 
 <script src="https://cdn.tiny.cloud/1/pvuk60ymq6ckc6wmu8atp7ivr43bfk5i55j1r03nhbzvrgtn/tinymce/5/tinymce.min.js"
-  referrerpolicy="origin"></script>
+    referrerpolicy="origin"></script>
 
 
 <script>
-  tinyMCE.init({
-    selector: "textarea",
-    skin: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "oxide-dark" : ""),
-    content_css: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""),
+    tinyMCE.init({
+        selector: "textarea",
+        skin: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "oxide-dark" : ""),
+        content_css: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""),
 
-    content_style:
-      "body { background: black; color: white; font-size: 14pt; font-family: Arial; }",
-    setup: function (editor) {
-      editor.on("change", function (e) {
-        editor.save();
-      });
-    },
-  });
+        content_style:
+            "body { background: black; color: white; font-size: 14pt; font-family: Arial; }",
+        setup: function (editor) {
+            editor.on("change", function (e) {
+                editor.save();
+            });
+        },
+    });
 </script>
 
 <div class="flex-container">
-  <div class="content-container">
-    <div class="form-container">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div class="content-container">
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <input class="text" type="text" name="title" value="{{blog.title}}" required placeholder="Title"
-          style="font-size: 3vw" />
-        <br />
+                <input class="text" type="text" name="title" value="{{blog.title}}" required placeholder="Title"
+                    style="font-size: 3vw" />
+                <br />
 
-        <br />
-        <textarea class="text" id="mytextarea" name="content" required>{{blog.content}}</textarea>
+                <br />
+                <textarea class="text" id="mytextarea" name="content" required>{{blog.content}}</textarea>
 
-        <br />
-        <br />
+                <br />
+                <br />
 
-        <input name="draft" type="submit" value="Save" class="submit-btn" />
-        <br><br><br>
-      </form>
+                <input name="draft" type="submit" value="Save" class="submit-btn" />
+                <br><br><br>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock content %}

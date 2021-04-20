@@ -1,246 +1,89 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body:not(.user-is-tabbing) button:focus,
-  body:not(.user-is-tabbing) input:focus,
-  body:not(.user-is-tabbing) select:focus,
-  body:not(.user-is-tabbing) textarea:focus {
-    outline: none;
-  }
-
-  h1 {
-    color: rgb(129, 212, 250);
-    font-size: 35px;
-    font-weight: 800;
-    align-items: center;
-    text-align: center;
-  }
-
-  .error {
-    color: rgb(238, 12, 202);
-    align-items: center;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .flex-container {
-    margin-top: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .content-container {
-    width: 500px;
-    height: 350px;
-  }
-
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
-    height: 700px;
-    margin-top: 5px;
-    padding-top: 20px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    background: #1f1f1f;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
-  }
-
-  .subtitle {
-    font-size: 16px;
-    color: rgb(129, 212, 250);
-  }
-
-  input {
-    padding: 5%;
-    border: none;
-    border-bottom: solid rgb(143, 143, 143) 1px;
-    margin-bottom: 30px;
-    background: none;
-    height: 35px;
-    width: 300px;
-    color: rgb(129, 212, 250);
-  }
-
-  .submit-btn {
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 2px 2px 7px #38d39f70;
-    background: black;
-    color: rgb(129, 212, 250);
-    width: 80px;
-    align-items: center;
-    transition: all 1s;
-  }
-
-  .submit-btn:hover {
-    color: rgb(129, 212, 250);
-    box-shadow: none;
-  }
-
-  #imageUpload {
-    display: none;
-  }
-
-  #profileImage {
-    cursor: pointer;
-  }
-
-  #profile-container {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    align-content: center;
-    margin-left: 70px;
-  }
-
-  #profile-container img {
-    width: 150px;
-    height: 150px;
-  }
-</style>
-
-<head>
-  <script>
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                alert('{{error}}')
-            {% endfor %}
-        {% endfor %}
-
-        {% for error in form.non_field_errors %}
-            alert('{{error}}')
-        {% endfor %}
-
-    {% endif %}
-  </script>
-</head>
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <div class="flex-container">
-  <div class="content-container">
-    <div class="form-container">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h1>Register</h1>
+    <div class="content-container">
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1>Register</h1>
 
-        <br />
+                <br />
 
-        <div id="profile-container">
-          <image
-            id="profileImage"
-            src="http://127.0.0.1:8000/media/default.jpg"
-          />
+                <div id="profile-container">
+                    <image id="profileImage" src="http://127.0.0.1:8000/media/default.jpg" />
+                </div>
+                <input id="imageUpload" type="file" name="avatar" placeholder="Photo" capture />
+
+                <br />
+                <input class="input" type="text" name="name" value="" required placeholder="Name" />
+
+                <br />
+                <input class="input" type="text" name="about" value="" required placeholder="About" />
+
+                <br />
+                <input class="input" type="email" name="email" value="" required placeholder="Email" />
+
+                <br />
+                <input class="input" type="password" name="password" value="" required placeholder="Password" />
+
+                <br />
+                <input class="input" type="password" name="confirm_password" value="" required
+                    placeholder="Confirm Password" />
+
+                <div class="custom-select" style="width: 200px">
+                    <select name="gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                </div>
+
+                <br />
+                <input type="submit" value="Submit" class="submit-btn" />
+            </form>
         </div>
-        <input
-          id="imageUpload"
-          type="file"
-          name="avatar"
-          placeholder="Photo"
-          capture
-        />
-
-        <br />
-        <input
-          class="input"
-          type="text"
-          name="name"
-          value=""
-          required
-          placeholder="Name"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="text"
-          name="about"
-          value=""
-          required
-          placeholder="About"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="email"
-          name="email"
-          value=""
-          required
-          placeholder="Email"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="password"
-          name="password"
-          value=""
-          required
-          placeholder="Password"
-        />
-
-        <br />
-        <input
-          class="input"
-          type="password"
-          name="confirm_password"
-          value=""
-          required
-          placeholder="Confirm Password"
-        />
-
-        <div class="custom-select" style="width: 200px">
-          <select name="gender">
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-            <option value="O">Other</option>
-          </select>
-        </div>
-
-        <br />
-        <input type="submit" value="Submit" class="submit-btn" />
-      </form>
     </div>
-  </div>
 </div>
 
 <script>
-  $("#profileImage").click(function (e) {
-    $("#imageUpload").click();
-  });
 
-  function fasterPreview(uploader) {
-    if (uploader.files && uploader.files[0]) {
-      $("#profileImage").attr(
-        "src",
-        window.URL.createObjectURL(uploader.files[0])
-      );
+    {% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+    alert('{{error}}')
+    {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+    alert('{{error}}')
+    {% endfor %}
+
+    {% endif %}
+
+
+
+    $("#profileImage").click(function (e) {
+        $("#imageUpload").click();
+    });
+
+    function fasterPreview(uploader) {
+        if (uploader.files && uploader.files[0]) {
+            $("#profileImage").attr(
+                "src",
+                window.URL.createObjectURL(uploader.files[0])
+            );
+        }
     }
-  }
 
-  $("#imageUpload").change(function () {
-    fasterPreview(this);
-  });
+    $("#imageUpload").change(function () {
+        fasterPreview(this);
+    });
 </script>
 
 {% endblock content %}
