@@ -27,6 +27,10 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('name', "Admin")
+        extra_fields.setdefault('gender', "M")
+        extra_fields.setdefault('avatar', "male.jpg")
+        extra_fields.setdefault('about', 'White Ink Administrator')
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
