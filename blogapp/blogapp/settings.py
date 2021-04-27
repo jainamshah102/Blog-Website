@@ -142,3 +142,16 @@ LOGIN_URL = "/user/login/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Firebase settings
+config = {
+    "apiKey": "AIzaSyAhhB1mSTjfN7pvNpZGjmN1EUHyW8FDFsE",
+    "authDomain": "blog-website-f447d.firebaseapp.com",
+    "projectId": "blog-website-f447d",
+    "storageBucket": "blog-website-f447d.appspot.com",
+    "messagingSenderId": "221245108791",
+    "appId": "1:221245108791:web:c621c9b1769a6e934945b2",
+    "measurementId": "G-9BVFNTZMB9",
+    "databaseURL": "",
+}

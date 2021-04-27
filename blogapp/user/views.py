@@ -13,6 +13,14 @@ from .models import User, Follow
 from notifications.signals import notify
 from django.db.models import Count
 import json
+import pyrebase
+from time import time
+from blogapp.settings import config
+
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
+path_to_cloud = 'avatars'
 
 
 def index(request):
@@ -47,11 +55,23 @@ def index(request):
 def register(request):
 
     if request.method == "POST":
-        user_form = UserForm(request.POST, request.FILES)
+        user_form = UserForm(request.POST)
 
         if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
+
+            if 'avatar' in request.FILES:
+                def milliseconds(): return int(time() * 1000)
+                timestamp = str(milliseconds())
+                result = storage.child(
+                    path_to_cloud + '/' + str(timestamp)).put(request.FILES['avatar'])
+
+                result["downloadTokens"]
+                url = storage.child(
+                    path_to_cloud + '/' + str(timestamp)).get_url(result["downloadTokens"])
+                user.avatar = url
+
             user.save()
 
             return HttpResponseRedirect(reverse('login'))
@@ -116,9 +136,21 @@ def view_profile(request, email=None):
 def edit_profile(request):
 
     if request.method == "POST":
-        user = UpdateForm(request.POST, request.FILES, instance=request.user)
+        user = UpdateForm(request.POST or None, instance=request.user)
 
         if user.is_valid():
+            if 'avatar' in request.FILES:
+                def milliseconds(): return int(time() * 1000)
+                timestamp = str(milliseconds())
+                result = storage.child(
+                    path_to_cloud + '/' + str(timestamp)).put(request.FILES['avatar'])
+
+                url = storage.child(
+                    path_to_cloud + '/' + str(timestamp)).get_url(result["downloadTokens"])
+
+                request.user.avatar = url
+                request.user.edit_save()
+
             user.save()
             return HttpResponseRedirect(reverse('view_profile'))
 

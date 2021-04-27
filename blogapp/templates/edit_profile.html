@@ -15,7 +15,7 @@
                 <br />
 
                 <div id="profile-container">
-                    <image id="profileImage" src="{{user.avatar.url}}" />
+                    <image id="profileImage" src={{user.avatar}} />
                 </div>
 
 
@@ -29,15 +29,6 @@
 
                 <br />
                 <input class="input" type="text" name="about" value="{{user.about}}" required placeholder="About" />
-
-
-                <div class="custom-select" style="width: 200px">
-                    <select name="gender" value={{user.gender}}>
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                        <option value="O">Other</option>
-                    </select>
-                </div>
 
                 <br />
                 <input type="submit" value="Save" class="submit-btn" />

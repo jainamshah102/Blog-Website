@@ -8,6 +8,9 @@ import blog
 import uuid
 import os
 
+MALE_IMG_URL = 'https://firebasestorage.googleapis.com/v0/b/blog-website-f447d.appspot.com/o/avatars%2Fmale.jpg?alt=media&token=54166618-78b2-4d46-b214-0ac5538ab7d4'
+FEMALE_IMG_URL = 'https://firebasestorage.googleapis.com/v0/b/blog-website-f447d.appspot.com/o/avatars%2Ffemale.jpg?alt=media&token=0382139f-63e4-4b59-9f4d-eb9aac04e879'
+
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -30,8 +33,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     about = models.CharField(max_length=1000, blank=True, default="")
     name = models.CharField(max_length=100, blank=True, default="")
     gender = models.CharField('gender', max_length=1, choices=GENDER_CHOICES)
-    avatar = models.ImageField(
-        upload_to=rename_file_upload, null=True, blank=True)
+    avatar = models.TextField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -43,10 +45,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
 
-        if self.gender and (self.avatar in ("male.jpg", "female.jpg") or not self.avatar):
-            self.avatar = 'male.jpg' if self.gender == "M" else 'female.jpg'
+        if self.gender and (self.avatar in (MALE_IMG_URL, FEMALE_IMG_URL) or not self.avatar):
+            self.avatar = MALE_IMG_URL if self.gender == "M" else FEMALE_IMG_URL
 
         super().save(*args, **kwargs)
+
+    def edit_save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+
 
     def followers(self):
         return Follow.objects.filter(author=self).count()

@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 
+MALE_IMG_URL = 'https://firebasestorage.googleapis.com/v0/b/blog-website-f447d.appspot.com/o/avatars%2Fmale.jpg?alt=media&token=54166618-78b2-4d46-b214-0ac5538ab7d4'
+
 
 class CustomUserManager(BaseUserManager):
     """
@@ -29,7 +31,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('name', "Admin")
         extra_fields.setdefault('gender', "M")
-        extra_fields.setdefault('avatar', "male.jpg")
+        extra_fields.setdefault('avatar', MALE_IMG_URL)
         extra_fields.setdefault('about', 'White Ink Administrator')
 
         if extra_fields.get('is_staff') is not True:
