@@ -4,3 +4,4 @@ static/tinymce
 *.pyc
 *.sqlite3
 media/avatars
+staticfiles
