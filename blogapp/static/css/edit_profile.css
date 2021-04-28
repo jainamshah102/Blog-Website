@@ -57,13 +57,15 @@ input {
 .submit-btn {
     cursor: pointer;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 2px 2px 7px rgb(34, 47, 62);
     background: white;
     color: rgb(34, 47, 62);
     width: 80px;
     align-items: center;
     transition: all 1s;
+    height: 40px;
+    width: 100px;
 }
 
 .submit-btn:hover {
