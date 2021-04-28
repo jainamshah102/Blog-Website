@@ -107,10 +107,6 @@ def login_user(request):
     return render(request, 'login.html', {})
 
 
-def about(request):
-    return render(request, 'about.html')
-
-
 @login_required
 def logout_user(request):
     logout(request)
