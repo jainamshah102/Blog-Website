@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from user.views import index
+import notifications.urls
+
 
 admin.site.site_header = 'White Ink'
 admin.site.index_title = 'White Ink'
@@ -30,6 +32,9 @@ urlpatterns = [
     path('', index, name='index'),
     path('user/', include('user.urls')),
     path('blog/', include('blog.urls')),
+    path('inbox/notifications/', include(notifications.urls,
+         namespace='notifications'), name='notifications'),
+
 ]
 
 

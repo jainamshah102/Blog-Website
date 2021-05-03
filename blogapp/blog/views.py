@@ -45,8 +45,10 @@ def view_blog(request, id, slug):
         except:
             pass
 
-        notify.send(request.user, recipient=blog.author,
-                    verb=f'{request.user.email} viewed your blog {blog.title}')
+        if (request.user != blog.author):
+
+            notify.send(request.user, recipient=blog.author,
+                        verb=f'viewed your blog {blog.title}')
 
         return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "follows": follows, "comments": get_comments(blog)})
 
@@ -62,16 +64,19 @@ def like(request):
                 like = Like.objects.get(user=request.user, blog=blog)
                 like.delete()
 
-                notify.send(request.user, recipient=blog.author,
-                            verb=f'disliked your blog {blog.title}')
+                if (request.user != blog.author):
+                    notify.send(request.user, recipient=blog.author,
+                                verb=f'disliked your blog {blog.title}')
 
                 liked = False
+
             except:
                 like = Like(user=request.user, blog=blog)
                 like.save()
 
-                notify.send(request.user, recipient=blog.author,
-                            verb=f'liked your blog {blog.title}')
+                if (request.user != blog.author):
+                    notify.send(request.user, recipient=blog.author,
+                                verb=f'liked your blog {blog.title}')
 
                 liked = True
 
@@ -91,8 +96,9 @@ def comment(request):
             comment = Comment(user=request.user, blog=blog, comment=comment)
             comment.save()
 
-            notify.send(request.user, recipient=blog.author,
-                        verb=f'commented on your blog {blog.title}')
+            if (request.user != blog.author):
+                notify.send(request.user, recipient=blog.author,
+                            verb=f'commented on your blog {blog.title}')
 
         content = {"comments": get_comments(blog)}
         return HttpResponse(json.dumps(content))
@@ -108,11 +114,11 @@ def new_blog(request):
             new_blog = blog.save(commit=False)
             new_blog.author = request.user
             new_blog.save()
-            
-            notify.send(request.user, recipient=request.user,
-                        verb=f'Blog titled {new_blog.title} saved to drafts')
 
-            return HttpResponseRedirect(reverse('index'))
+            notify.send(request.user, recipient=request.user,
+                        verb=f'your blog {new_blog.title} saved to drafts')
+
+            return HttpResponseRedirect(reverse('view_drafts'))
 
     return render(request, 'blog.html')
 
@@ -148,9 +154,9 @@ def publish_blog(request, blog):
 
             if blog.author == request.user:
                 blog.publish()
-                
+
                 notify.send(request.user, recipient=blog.author,
-                        verb=f'Blog titled {blog.title} published')
+                            verb=f'your blog {blog.title} published')
 
                 return redirect('view_blog', id=blog.id, slug=blog.slug)
 

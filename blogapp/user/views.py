@@ -16,6 +16,7 @@ import json
 import pyrebase
 from time import time
 from blogapp.settings import config
+from notifications.models import Notification
 
 
 firebase = pyrebase.initialize_app(config)
@@ -74,7 +75,7 @@ def register(request):
 
             user.save()
 
-            # notify.send(user, recipient=user, verb='registeration successfull')
+            notify.send(user, recipient=user, verb='registeration successfull')
 
             return HttpResponseRedirect(reverse('login'))
 
@@ -125,6 +126,9 @@ def view_profile(request, email=None):
         else:
             user = User.objects.get(email=email)
             blogs = Blog.objects.filter(author=user,  status=1)
+
+            notify.send(request.user, recipient=user, verb='viewed your profile')
+
             return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user})
 
     return render(request, 'view_profile.html')
@@ -152,7 +156,7 @@ def edit_profile(request):
             user.save()
 
             notify.send(request.user, recipient=request.user,
-                        verb="Profile edited successfully")
+                        verb="profile edited successfully")
 
             return HttpResponseRedirect(reverse('view_profile'))
 
@@ -176,7 +180,7 @@ def follow(request):
                 follow.delete()
 
                 notify.send(sender=request.user, recipient=author,
-                            verb=f"{request.user.email} unfollowed you.")
+                            verb=f"unfollowed you.")
 
                 follows = False
 
@@ -185,10 +189,22 @@ def follow(request):
                 follow.save()
 
                 notify.send(sender=request.user, recipient=author,
-                            verb=f"{request.user.email} started following you.")
+                            verb=f"started following you.")
 
                 follows = True
 
             content = {"follows": follows}
 
             return HttpResponse(json.dumps(content))
+
+
+@login_required
+def notifications(request):
+    if (request.method == "GET"):
+
+        # First marking all notifications as read
+        request.user.notifications.mark_all_as_read()
+
+        return render(request, 'notifications.html', {'notifications': request.user.notifications.all()})
+
+    return render(request, 'notifications.html')
