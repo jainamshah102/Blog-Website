@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 import json
 from user.models import User, Follow
+from notifications.signals import notify
 
 
 def get_comments(blog):
@@ -44,6 +45,9 @@ def view_blog(request, id, slug):
         except:
             pass
 
+        notify.send(request.user, recipient=blog.author,
+                    verb=f'{request.user.email} viewed your blog {blog.title}')
+
         return render(request, 'view_blog.html', {'blog': blog, "author": blog.author, "liked": liked, "follows": follows, "comments": get_comments(blog)})
 
 
@@ -57,10 +61,18 @@ def like(request):
             try:
                 like = Like.objects.get(user=request.user, blog=blog)
                 like.delete()
+
+                notify.send(request.user, recipient=blog.author,
+                            verb=f'disliked your blog {blog.title}')
+
                 liked = False
             except:
                 like = Like(user=request.user, blog=blog)
                 like.save()
+
+                notify.send(request.user, recipient=blog.author,
+                            verb=f'liked your blog {blog.title}')
+
                 liked = True
 
             content = {'liked': liked}
@@ -79,6 +91,9 @@ def comment(request):
             comment = Comment(user=request.user, blog=blog, comment=comment)
             comment.save()
 
+            notify.send(request.user, recipient=blog.author,
+                        verb=f'commented on your blog {blog.title}')
+
         content = {"comments": get_comments(blog)}
         return HttpResponse(json.dumps(content))
 
@@ -93,6 +108,10 @@ def new_blog(request):
             new_blog = blog.save(commit=False)
             new_blog.author = request.user
             new_blog.save()
+            
+            notify.send(request.user, recipient=request.user,
+                        verb=f'Blog titled {new_blog.title} saved to drafts')
+
             return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'blog.html')
@@ -129,6 +148,10 @@ def publish_blog(request, blog):
 
             if blog.author == request.user:
                 blog.publish()
+                
+                notify.send(request.user, recipient=blog.author,
+                        verb=f'Blog titled {blog.title} published')
+
                 return redirect('view_blog', id=blog.id, slug=blog.slug)
 
         return render(request, 'drafts.html')

@@ -74,6 +74,8 @@ def register(request):
 
             user.save()
 
+            # notify.send(user, recipient=user, verb='registeration successfull')
+
             return HttpResponseRedirect(reverse('login'))
 
         return render(request, 'registration.html', {'form': user_form})
@@ -148,6 +150,10 @@ def edit_profile(request):
                 request.user.edit_save()
 
             user.save()
+
+            notify.send(request.user, recipient=request.user,
+                        verb="Profile edited successfully")
+
             return HttpResponseRedirect(reverse('view_profile'))
 
         return render(request, 'edit_profile.html', {'user': request.user})
@@ -168,10 +174,19 @@ def follow(request):
             try:
                 follow = Follow.objects.get(user=request.user, author=author)
                 follow.delete()
+
+                notify.send(sender=request.user, recipient=author,
+                            verb=f"{request.user.email} unfollowed you.")
+
                 follows = False
+
             except:
                 follow = Follow(user=request.user, author=author)
                 follow.save()
+
+                notify.send(sender=request.user, recipient=author,
+                            verb=f"{request.user.email} started following you.")
+
                 follows = True
 
             content = {"follows": follows}
