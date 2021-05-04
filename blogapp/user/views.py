@@ -130,8 +130,15 @@ def view_profile(request, email=None):
             if request.user != user:
                 notify.send(request.user, recipient=user,
                             verb='viewed your profile')
+            follows = False
 
-            return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user})
+            try:
+                Follow.objects.get(user=request.user, author=user)
+                follows = True
+            except:
+                pass
+
+            return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user, "follows": follows})
 
     return render(request, 'view_profile.html')
 
