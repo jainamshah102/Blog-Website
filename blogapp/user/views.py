@@ -29,7 +29,7 @@ def index(request):
     if request.method == "GET":
         top_blogs = Blog.objects.filter(status=1).order_by('-published_on')
         top_blogs = sorted(top_blogs, key=lambda b: b.likes()
-                           * b.comments(), reverse=True)[:3]
+                           * b.comments(), reverse=True)[:9]
 
         likes_comments = []
 
@@ -39,7 +39,7 @@ def index(request):
 
         top_authors = User.objects.all()
         top_authors = sorted(
-            top_authors, key=lambda a: a.followers(), reverse=True)[:10]
+            top_authors, key=lambda a: a.followers(), reverse=True)[:3]
 
         author_followers = []
 
