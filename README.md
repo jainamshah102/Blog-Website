@@ -3,7 +3,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.9-brightgreen.svg)](https://python.org)
 [![Django Version](https://img.shields.io/badge/django-3.2-brightgreen.svg)](https://djangoproject.com)
-
+</br>
 
 
 ## Problem Definition:
@@ -15,6 +15,12 @@ so that everyone can read it.
 internet around the globe. It can also be used to read other people’s work. WhiteInk
 provides intuitive tools to make your writing look professional. It is easy to use and user
 friendly.
+</br>
+
+## Hosted site
+http://blogapp77.herokuapp.com/
+</br>
+
 
 ## Running the Project Locally
 
@@ -49,4 +55,3 @@ python manage.py runserver
 ```
 
 The project will be available at **127.0.0.1:8000**.
-
