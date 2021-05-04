@@ -53,8 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def edit_save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-
-
     def followers(self):
         return Follow.objects.filter(author=self).count()
 

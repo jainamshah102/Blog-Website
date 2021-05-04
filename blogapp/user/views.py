@@ -127,7 +127,8 @@ def view_profile(request, email=None):
             user = User.objects.get(email=email)
             blogs = Blog.objects.filter(author=user,  status=1)
 
-            notify.send(request.user, recipient=user, verb='viewed your profile')
+            notify.send(request.user, recipient=user,
+                        verb='viewed your profile')
 
             return render(request, 'view_profile.html', {'user': user, 'blogs': blogs, "current_user": request.user})
 
