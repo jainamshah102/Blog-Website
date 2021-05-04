@@ -1,1 +1,53 @@
-# Blog-Website
+# White Ink Blog Website
+
+</br>
+</br>
+
+## Problem Definition:
+
+- Many people who are good at writing literature, poetry or any articles whatsoever, do
+know how to showcase their work. A platform is required for people to post their writing
+so that everyone can read it. 
+- WhiteInk is a blogging platform which enables people to share their ideas across the
+internet around the globe. It can also be used to read other people’s work. WhiteInk
+provides intuitive tools to make your writing look professional. It is easy to use and user
+friendly.
+
+</br>
+</br>
+
+
+## Running the Project Locally
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/jainam2385/Blog-Website.git
+```
+
+Navigate to folder:
+
+```bash
+cd blogapp
+```
+
+Install the requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+Create the database:
+
+```bash
+python manage.py migrate
+```
+
+Finally, run the development server:
+
+```bash
+python manage.py runserver
+```
+
+The project will be available at **127.0.0.1:8000**.
+
