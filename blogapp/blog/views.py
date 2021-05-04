@@ -158,6 +158,12 @@ def publish_blog(request, blog):
                 notify.send(request.user, recipient=blog.author,
                             verb=f'your blog {blog.title} published')
 
+                followers = Follow.objects.filter(author=request.user)
+                recipients = [follower.user for follower in followers]
+
+                notify.send(request.user, recipient=recipients,
+                            verb=f'published a new blog {blog.title}')
+
                 return redirect('view_blog', id=blog.id, slug=blog.slug)
 
         return render(request, 'drafts.html')
