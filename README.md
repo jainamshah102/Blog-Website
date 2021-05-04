@@ -1,7 +1,10 @@
 # White Ink Blog Website
 
-</br>
-</br>
+
+[![Python Version](https://img.shields.io/badge/python-3.9-brightgreen.svg)](https://python.org)
+[![Django Version](https://img.shields.io/badge/django-3.2-brightgreen.svg)](https://djangoproject.com)
+
+
 
 ## Problem Definition:
 
@@ -12,10 +15,6 @@ so that everyone can read it.
 internet around the globe. It can also be used to read other people’s work. WhiteInk
 provides intuitive tools to make your writing look professional. It is easy to use and user
 friendly.
-
-</br>
-</br>
-
 
 ## Running the Project Locally
 
